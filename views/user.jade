@@ -1,0 +1,84 @@
+h1 Welcome user#{id}
+// Jade 好像不能用tab键，或者规定tab键宽度，建议vim set expandtab将tab换成空格
+   #login.yes.no
+   a(href="#")
+#content
+    a(href="/add", id="go") go
+
+script(src='/javascripts/jquery-1.7.1.min.js')
+//获取IP地址归属信息，根据新浪的API
+script(src="http://int.dpool.sina.com.cn/iplookup/iplookup.php?format=js") 
+script(src='/javascripts/user.js')
+
+input(id="btn", type="button", value='Web - Service')
+#dictionary
+
+ul
+    li.first
+      a(href='#', id='first_a') foo
+    li
+      a(href='#') bar
+    li.last
+      a(href='#') bar 
+script
+    function foo(){};
+    if(foo) {
+        !function(){};
+    }else {
+        !function(){};
+    }
+ul
+    li.first: a(href='#') foo
+    li:a(href='#') bar 如果li后没有空格li:a会被视为整体，作为一个标记，用括号描述属性
+    //如果没有空格li:a会被视为整体，作为一个标记，用括号描述属性
+    li.last: a(href='#') baz
+div
+    case id
+        when 0
+            p you have no friends
+        when 1 
+            p you have a friend
+        default: p you have #{id} friends
+input(type='checkbox', checked, value='you are a man', name='who')
+-var user = {id: 1, title: 'wayne'}
+a(href='/user/'+user.id)=user.title
+
+- var arr = ['man', 'girl', 'boy', 'miss']
+- if(arr[0] == 'man')
+    p= arr[0]
+- else 
+    p oh no! no a man！
+if arr[0] == 'man'
+    p= '这是Jade内置的if，没有括号' + arr[0]
+else 
+    p= '这个是Jade内置的else，没有括号'
+
+
+each item in arr
+    li= item //等号要跟随，不能有空格
+
+each item, i in arr
+    li #{item}: #{i}
+
+//内置的for，没有括号，没有-
+for item in arr
+    li= item
+
+//    JavaScript方法有括号,还有注意两者的输出内容
+//    对比以下两个可以知道，li= 一个变量 
+//    li #{变量}  #{变量}  多个#{变量}
+//    如果不加#{},会认为是内容
+-for(var item in arr)
+    li #{item} : #{arr[item]}
+-for(var item in arr)
+    li item : arr[item]
+#action
+    form(action='/action',method='post', enctype="multipart/form-data")
+        lable 姓名
+        input(name="user[name]", type='text')
+        lable 密码
+        input(name="user[psw]", type='password');
+        input(name="img", type="file");
+        input(name="submit", type='submit', value="提交");
+        input(name="reset", type='reset'); 
+include foot
