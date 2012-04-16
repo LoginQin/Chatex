@@ -73,12 +73,15 @@ setInterval(function(){
 //广播/发送重复
 var onlines = [];
 var onlinesocket = {};
-var LeaveMsgLimit = 10, KeepOnlineMinute = 60*1000;
+var LeaveMsgLimit = 10, KeepOnlineMinute = 120*1000;
 var Group = {'group:default': {name:'NoChat', UserList:[], Msgs:[]}}; //已注册的群
 var SessionList = {};//socketid 与用户 sessionid 映射表
 //io.settings.log = false;
 io.enable('browser client gzip');
 io.set('log level', 1);
+var MasterMsg = {};
+var Master = [{masterid: 'master:12345', name:'chinesetiger', pw:'1234', NickName: '中国老虎', alone:0, gender:"Mr", sound:1, animate:1, city:'西雅图', online:false},
+      {masterid:'master:123456', name:'cc', pw:'123',NickName: 'KKKK', alone:0, gender:"Mr", sound:1, animate:1, city:'西雅图', online:false}];
 
 io.sockets.on('connection', function(socket){
   var ClientSetting = {//每一个客户端的基本数据
@@ -133,7 +136,7 @@ io.sockets.on('connection', function(socket){
     for(var a in onlinesocket){
       //if(a == socket.id)
       if(onlinesocket[a].dropTimeId) continue;
-      b.push({'id': a,'info':onlinesocket[a].name +'-'+onlinesocket[a].city});
+      b.push({'id': a,'nick':onlinesocket[a].name, 'city': onlinesocket[a].city});
       len++;
     }
     return {'total': len, 'list': b};
@@ -152,28 +155,34 @@ io.sockets.on('connection', function(socket){
   socket.on('disconnect', function(){
     var sessionid = SessionList[socket.id];
     console.log("User Leave:"+ sessionid)
-    try{
-      onlinesocket[sessionid]["dropTimeId"] = '';
-      onlinesocket[sessionid]["dropTimeId"] = setTimeout(function(){
-        delete onlinesocket[sessionid];
-        delete SessionList[socket.id];
-        console.log("delete offline:" + sessionid);
-        console.log("New SessionList:");
-        console.log(SessionList);
-      }, KeepOnlineMinute); //2分钟没有连接上,自动销毁
-      io.sockets.emit('update online list', getOnlineList());
-      socket.broadcast.emit('target disconnect', sessionid);
-    }catch(err){
-      //同个浏览器打开多个页面的时候
-      console.log("Disconnect:"+socket.id+"; SessionList:"+SessionList);
+    if(sessionid.match(/master/i)){
+      delete SessionList[socket.id];
+      delete onlinesocket[sessionid];
+    }else{
+      try{
+        onlinesocket[sessionid]["dropTimeId"] = '';
+        onlinesocket[sessionid]["dropTimeId"] = setTimeout(function(){
+          delete onlinesocket[sessionid];
+          delete SessionList[socket.id];
+          console.log("delete offline:" + sessionid);
+          console.log("New SessionList:");
+          console.log(SessionList);
+        }, KeepOnlineMinute); //2分钟没有连接上,自动销毁
+
+      }catch(err){
+        //同个浏览器打开多个页面的时候
+        console.log("Disconnect:"+socket.id+"; SessionList:"+SessionList);
+      }
     }
+        io.sockets.emit('update online list', getOnlineList());
+        socket.broadcast.emit('target disconnect', sessionid);
   });
 
-  socket.on('add to online list', function(client){
+  socket.on('add to online list', function(client, callback){ //暂时利用这条连接返回Master列表吧
     if(!SessionList[socket.id]) {
       SessionList[socket.id] = client.sessionid;//如果是第一次链接
     }
-   
+
     if(!onlinesocket[client.sessionid]){
       ClientInfo.socket = socket;
       onlinesocket[client.sessionid] = ClientInfo;
@@ -181,7 +190,8 @@ io.sockets.on('connection', function(socket){
       onlinesocket[client.sessionid].socket.disconnect();
       onlinesocket[client.sessionid].socket = socket;
     }
-
+    callback([{masterid:'master:12345', nickname:'中国老虎', online:false },
+      { masterid:'master:123456', nickname:'cc', online:false}]);//返回master列表
 
     for(var olderid in SessionList){
       if(SessionList[olderid] == client.sessionid){ //新的链接会产生新socketid,要重新映射    
@@ -242,11 +252,18 @@ io.sockets.on('connection', function(socket){
     }
 
   });
+
   socket.on('private message', function(to, data, callback){
     var target = onlinesocket[to];
     var sessionid = SessionList[socket.id];
+    if(to.match(/master/i) && !target){ //如果是向主人发送信息,并且不在线
+      MasterMsg[to] ? MasterMsg[to].push({from:sessionid,data:data}) : MasterMsg[to] = [{from:sessionid,data:data}];
+      socket.emit('message error', '该Master不在线,已为您保存消息,Master登录才能看见,如果需要主人联系您,建议您留下联系方式');
+      callback(true);
+      return;
+    }
     if(target){
-      if(target.dropTimeId){
+      if(target.dropTimeId && !to.match(/master/i)){
         onlinesocket[to]["leaveMessage"].length < LeaveMsgLimit ? onlinesocket[to]["leaveMessage"].push({from:sessionid, data: data}) : 1;
         socket.emit('message error', '用户离线, 服务器暂为您保存'+onlinesocket[to]["leaveMessage"].length+'/10 条离线消息, 10分钟内该用户需重新链接才能获取'); 
         callback(true);
@@ -292,7 +309,36 @@ io.sockets.on('connection', function(socket){
     // onlinesocket[socket.id]['alone'] = flag;
     fn(true);
   });
-});
 
-app.listen(3000);
-console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
+  socket.on('Master Sign In', function(data, fn){
+    var master;
+    var sessionid = SessionList[socket.id]; //找到当前匹配的对话
+    for(var i = 0; i < Master.length; i++){
+      master = Master[i];
+      if(data.name == master.name && data.pw == master.pw){ 
+        if(onlinesocket[master.masterid]){ //如果该用户id在列表中, 说明已经登陆过
+          onlinesocket[master.masterid].socket.disconnect();//将原来的链接断开
+        }
+        SessionList[socket.id] = master.masterid; //才将当前对话提升为MasterId来存储 
+        onlinesocket[master.masterid] = onlinesocket[sessionid]; //重新映射在线列表
+        onlinesocket[master.masterid].name = master.NickName;
+        onlinesocket[master.masterid].city = master.city;
+        onlinesocket[master.masterid].sound = master.sound;
+        onlinesocket[master.masterid].gender = master.gender;
+        onlinesocket[master.masterid].animate = master.animate;
+        onlinesocket[master.masterid].alone = master.alone;
+        delete onlinesocket[sessionid];//删除原来的映射
+        master.online = true; //
+        io.sockets.emit('update online list', getOnlineList());//告诉所有人更新其在线列表
+        fn(true, {masterid: master.masterid, NickName : master.NickName, alone: master.alone, gender: master.gender, sound: master.sound, animate: master.animate, city: master.city, MasterMsg: MasterMsg[master.masterid]});
+        MasterMsg[master.masterid] ? delete MasterMsg[master.masterid] : 1;
+        io.sockets.emit("target reconnect", master.masterid);
+        return;
+      }
+    }
+    fn(false);
+  });
+  });
+
+  app.listen(3000);
+  console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
