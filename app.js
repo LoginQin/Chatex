@@ -4,9 +4,11 @@
  */
 
 var express = require('express')
-, routes = require('./routes');
-  //parseCookie = require('connect').utils.parseCookie,
-  //MemoryStore = require('connect/lib/middleware/session/memory');
+, routes = require('./routes'),
+  redis = require('redis'); //redis数据库操作
+  
+//parseCookie = require('connect').utils.parseCookie,
+//MemoryStore = require('connect/lib/middleware/session/memory');
 var sio = require('socket.io'); 
 //    storeMemory = new MemoryStore({
 //		reapInterval: 60000 * 10
@@ -14,7 +16,7 @@ var sio = require('socket.io');
 
 var app = module.exports = express.createServer();
 
-// Configuration
+//Express Configuration
 
 app.configure(function(){
   app.set('views', __dirname + '/views');
@@ -22,10 +24,10 @@ app.configure(function(){
   // app.use(express.bodyParser());//默认上传目录在你的appdata/temp文件夹下
   app.use(express.bodyParser({uploadDir: './uploadtmp'}));//指定上传临时目录
   app.use(express.cookieParser());
-//  app.use(express.session({
-//		secret: 'wyq',
-//		store:storeMemory 
-//  }));
+  //  app.use(express.session({
+  //		secret: 'wyq',
+  //		store:storeMemory 
+  //  }));
   app.use(express.methodOverride());
   app.use(app.router);
   app.use(express.static(__dirname + '/public'));
@@ -80,8 +82,8 @@ var SessionList = {};//socketid 与用户 sessionid 映射表
 io.enable('browser client gzip');
 io.set('log level', 1);
 var MasterMsg = {};
-var Master = [{masterid: 'master:12345', name:'chinesetiger', pw:'1234', NickName: '中国老虎', alone:0, gender:"Mr", sound:1, animate:1, city:'西雅图', online:false},
-      {masterid:'master:123456', name:'cc', pw:'123',NickName: 'KKKK', alone:0, gender:"Mr", sound:1, animate:1, city:'西雅图', online:false}];
+//var Master = [{masterid: 'master:12345', name:'chinesetiger', pw:'1234', NickName: '中国老虎', alone:0, gender:"Mr", sound:1, animate:1, city:'西雅图', online:false},
+//{masterid:'master:123456', name:'cc', pw:'123',NickName: 'KKKK', alone:0, gender:"Mr", sound:1, animate:1, city:'西雅图', online:false}];
 
 io.sockets.on('connection', function(socket){
   var ClientSetting = {//每一个客户端的基本数据
@@ -103,34 +105,27 @@ io.sockets.on('connection', function(socket){
   'alone': 0
   };
   var ClientInfo ={
-      'name': '',
-  'country':'',
-  'gender': '',
-  'IP_start':'',
-  'userAgent':'',
-  'Browser':'',
-  'OS':'',
-  'mobile':'',
-  'mos':'',
-  'mbrowser':'',
-  'hostname':'',
-  'href':'',
-  'city':'',
-  'province':'',
-  'isp':'',
-  'alone': 0,
-  'leaveMessage' : [],
-  'dropTimeId' : '',
-  'socket': {}
+    'name': '',
+    'country':'',
+    'gender': '',
+    'IP_start':'',
+    'userAgent':'',
+    'Browser':'',
+    'OS':'',
+    'mobile':'',
+    'mos':'',
+    'mbrowser':'',
+    'hostname':'',
+    'href':'',
+    'city':'',
+    'province':'',
+    'isp':'',
+    'alone': 0,
+    'leaveMessage' : [],
+    'dropTimeId' : '',
+    'socket': {}
   };
 
-  /*
-  if(!onlinesocket[socket.id]){
-    ClientInfo.socket = socket;
-    onlinesocket[socket.id] = ClientInfo;
-  }
-  */
-  //socket.broadcast.emit('connect');
   var getOnlineList = function(){
     var b = [],len = 0;
     for(var a in onlinesocket){
@@ -141,21 +136,40 @@ io.sockets.on('connection', function(socket){
     }
     return {'total': len, 'list': b};
   };
+
+  //保存到Redis数据库
+  var saveToDB = function(key, obj, fn){
+    var redisclient = redis.createClient();
+    redisclient.on('error',function(err){ //监听错误信息
+    console.log('Error' + err);
+  });
+    redisclient.auth(12345, function(err){ //如果有验证,要加入验证
+      if(err){
+        console.log("Auth Error:"+ err);
+      }
+    });
+    redisclient.HMSET(key, obj, function(err, reply){
+      console.log("Redis Save:"); 
+      console.log(reply);
+      redisclient.end();//注意无阻塞操作关闭数据库连接的地方
+    });
+   
+  }
   socket.on('save data', function(data, fn){
     socket.set('nickname',data.name,function(){
       fn(true);
       for(var i in ClientSetting){
         if(i == 'socket') continue;
-        //onlinesocket[socket.id][i] = data[i] ? data[i] : '';
-         onlinesocket[data.sessionid][i] = data[i] ? data[i] : '';
+        onlinesocket[data.sessionid][i] = data[i] ? data[i] : '';
       }
+      saveToDB(data.sessionid, {NickName: data.name, sound:data.sound, animate:data.animate, city:data.city, gender:data.gender});
       io.sockets.emit('update online list', getOnlineList());
     });
   });
   socket.on('disconnect', function(){
     var sessionid = SessionList[socket.id];
     console.log("User Leave:"+ sessionid)
-    if(sessionid.match(/master/i)){
+    if(typeof sessionid == 'string' && sessionid.match(/master/i)){
       delete SessionList[socket.id];
       delete onlinesocket[sessionid];
     }else{
@@ -174,10 +188,31 @@ io.sockets.on('connection', function(socket){
         console.log("Disconnect:"+socket.id+"; SessionList:"+SessionList);
       }
     }
-        io.sockets.emit('update online list', getOnlineList());
-        socket.broadcast.emit('target disconnect', sessionid);
+  socket.broadcast.emit('target disconnect', sessionid);
+  io.sockets.emit('update online list', getOnlineList());
   });
 
+  var getMasterList = function(callback){
+    var rclient = redis.createClient();
+    rclient.sort('Masters', 'get', 'nickname:*', function(err, replay){
+    });
+
+  };
+  var getMasterListFromDB = function(fn){
+    var redisclient = redis.createClient();
+    redisclient.auth(12345, function(err, reply){
+      redisclient.sort('master:list', 'get', 'master:*->masterid','get','master:*->nickname','get', 'master:*->online', function(err, reply){
+        var result = [];
+        for(var i = 0; i < reply.length; ){
+          result.push({masterid : reply[i], nickname:reply[i+1], online: parseInt(reply[i+2])});
+          i += 3;
+        };
+        fn(result);
+        redisclient.end();
+      });
+    });
+
+  };
   socket.on('add to online list', function(client, callback){ //暂时利用这条连接返回Master列表吧
     if(!SessionList[socket.id]) {
       SessionList[socket.id] = client.sessionid;//如果是第一次链接
@@ -190,8 +225,11 @@ io.sockets.on('connection', function(socket){
       onlinesocket[client.sessionid].socket.disconnect();
       onlinesocket[client.sessionid].socket = socket;
     }
-    callback([{masterid:'master:12345', nickname:'中国老虎', online:false },
-      { masterid:'master:123456', nickname:'cc', online:false}]);//返回master列表
+
+    /*
+       callback([{masterid:'master:12345', nickname:'中国老虎', online:false },
+       { masterid:'master:123456', nickname:'cc', online:false}]);//返回master列表
+       */
 
     for(var olderid in SessionList){
       if(SessionList[olderid] == client.sessionid){ //新的链接会产生新socketid,要重新映射    
@@ -218,18 +256,22 @@ io.sockets.on('connection', function(socket){
       }
     }
     //-----------------
-    for(var i in ClientSetting){
+    for(var i in ClientSetting){ //根据客户端信息,初始化当前socket数据
       if(i == 'socket') continue;
-      // onlinesocket[socket.id][i] = client[i] ? client[i] : '';
       onlinesocket[client.sessionid][i] = client[i] ? client[i] : '';
     }
     //===
     console.log(getOnlineList());
     console.log(SessionList);
-    io.sockets.emit('update online list', getOnlineList());
+    /*从数据库获得Master列表*/
+    getMasterListFromDB(function(data){
+      console.log(data);
+      callback(data);
+      io.sockets.emit('update online list', getOnlineList()); //通知所有人
+    });
+    //io.sockets.emit('update online list', getOnlineList()); //通知所有人
   });
   socket.on('public message', function(from, data, callback){
-    //  socket.get('nickname', function(err, name){
     if(Group[from]){ //如果是已注册的群
       data['groupname'] = Group[from].name;
       data['sid'] = SessionList[socket.id];//消息体还要标识是谁发送的
@@ -276,7 +318,6 @@ io.sockets.on('connection', function(socket){
           callback(ok);
         });
       }
-      // target.socket.emit('private message', socket.id, data);
     }else{
       callback(false);
       socket.emit('message error', 'The user has offline, Your message has lose.');
@@ -300,45 +341,62 @@ io.sockets.on('connection', function(socket){
     }
   });
   socket.on('Leave Me Alone', function(flag, fn){
-    // for(var sessionid in onlinesocket){
-    //    if(onlinesocket[sessionid].socket["id"] == socket.id){
     var sessionid = SessionList[socket.id];    
     onlinesocket[sessionid]['alone'] = flag;
-    //    }
-    //  }
-    // onlinesocket[socket.id]['alone'] = flag;
     fn(true);
   });
 
   socket.on('Master Sign In', function(data, fn){
-    var master;
     var sessionid = SessionList[socket.id]; //找到当前匹配的对话
-    for(var i = 0; i < Master.length; i++){
-      master = Master[i];
-      if(data.name == master.name && data.pw == master.pw){ 
-        if(onlinesocket[master.masterid]){ //如果该用户id在列表中, 说明已经登陆过
-          onlinesocket[master.masterid].socket.disconnect();//将原来的链接断开
-        }
-        SessionList[socket.id] = master.masterid; //才将当前对话提升为MasterId来存储 
-        onlinesocket[master.masterid] = onlinesocket[sessionid]; //重新映射在线列表
-        onlinesocket[master.masterid].name = master.NickName;
-        onlinesocket[master.masterid].city = master.city;
-        onlinesocket[master.masterid].sound = master.sound;
-        onlinesocket[master.masterid].gender = master.gender;
-        onlinesocket[master.masterid].animate = master.animate;
-        onlinesocket[master.masterid].alone = master.alone;
-        delete onlinesocket[sessionid];//删除原来的映射
-        master.online = true; //
-        io.sockets.emit('update online list', getOnlineList());//告诉所有人更新其在线列表
-        fn(true, {masterid: master.masterid, NickName : master.NickName, alone: master.alone, gender: master.gender, sound: master.sound, animate: master.animate, city: master.city, MasterMsg: MasterMsg[master.masterid]});
-        MasterMsg[master.masterid] ? delete MasterMsg[master.masterid] : 1;
-        io.sockets.emit("target reconnect", master.masterid);
+    var redisclient = redis.createClient();
+    redisclient.on('error',function(err){ //监听错误信息
+      console.log('Error' + err);
+    });
+    redisclient.auth(12345, function(err){ //如果有验证,要加入验证
+      if(err){
+        console.log("Auth Error:"+ err);
+      }
+    });
+    redisclient.GET(data.name + ':master:id', function(err, masterid){
+      console.log(masterid);
+      if(!masterid){
+        fn(false);
+        redisclient.end();
         return;
       }
-    }
-    fn(false);
-  });
+      redisclient.HGETALL('master:' + masterid, function(err, master){
+        console.log(master);
+        if(err){
+          console.log(err);
+          return;
+        }
+        if(data.name == master.name && data.pw == master.pw){ 
+          if(onlinesocket[master.masterid]){ //如果该用户id在列表中, 说明已经登陆过
+            onlinesocket[master.masterid].socket.disconnect();//将原来的链接断开
+          }
+          SessionList[socket.id] = master.masterid; //才将当前对话提升为MasterId来存储 
+          onlinesocket[master.masterid] = onlinesocket[sessionid]; //重新映射在线列表
+          onlinesocket[master.masterid].name = master.nickname;
+          onlinesocket[master.masterid].city = master.city;
+          onlinesocket[master.masterid].sound = parseInt(master.sound); //注意Redis没有整型数据,要转
+          onlinesocket[master.masterid].gender = master.gender;
+          onlinesocket[master.masterid].animate = parseInt(master.animate);
+          onlinesocket[master.masterid].alone = parseInt(master.alone);
+          delete onlinesocket[sessionid];//删除原来的映射
+          master.online = true; //
+          io.sockets.emit('update online list', getOnlineList());//告诉所有人更新其在线列表
+          fn(true, {masterid: master.masterid, nickname : master.nickname, alone: master.alone, gender: master.gender, sound: master.sound, animate: master.animate, city: master.city, MasterMsg: MasterMsg[master.masterid]});
+          MasterMsg[master.masterid] ? delete MasterMsg[master.masterid] : 1;
+          io.sockets.emit("target reconnect", master.masterid);
+          redisclient.end();
+          return;
+        }
+        fn(false);
+        redisclient.end();
+      }); 
+    });
   });
 
-  app.listen(3000);
-  console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
+});
+app.listen(3000);
+console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
