@@ -1,0 +1,22 @@
+Master 
+#string - key (括号表示可变)
+ master:id       //自增masterid,起始设置为为1000
+(name):master:id
+//登陆的时候,用相应的用户名找到masterid,再通过hash表找到用户数据,比如验证密码,返回初始化数据
+//也可以(name):master:pw 验证密码,但是这个没有用,因为验证完了要获取master数据
+
+#Hash key = master:(id);
+field - value
+masterid - master:(id)
+name
+pw
+nickname
+gender
+sound
+animate
+city
+online
+
+#list key = master:list
+//rpush保存所有的masterid,方便以后sort获取所有数据,并进行关联
+
