@@ -1,0 +1,208 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>WebIM</title>
+    <script type="text/javascript" src="javascripts/jquery-1.7.2.min.js" ></script>
+    <script type="text/javascript" src="javascripts/socket.io.min.js"></script>
+    <link id="IM_css" rel="stylesheet" type="text/css" href="stylesheets/blue.css" />
+    <script type="text/javascript" src="http://int.dpool.sina.com.cn/iplookup/iplookup.php?format=js"></script>
+    <script type="text/javascript"  id="webimjs" src="javascripts/webim.js"></script>
+    <script type="text/javascript" src="javascripts/prettify.js"></script>
+    <link type="text/css" rel="stylesheet" href="stylesheets/prettify.css"/>
+  </head>
+
+  <body >
+
+<div style="background:#0FF; width:1248px; height:1000px"></div>
+    <div id="WebIM">
+      <!-- 聊天窗口 -->
+      <div id="IM_MiniBox" title="Chatting With Online People"><div id="IM_NoticeIMG" class="IM_IMG-offline">;-(</div><b>聊天</b><span>Connecting</span></div>
+      <div id="IM_SysMsgBar" ><span>System Message</span></div> 
+      <div id="IM_ChatBox">
+      
+        <div class="IM_ChatList" onselectstart="return false">
+            <h3>Chat</h3>　
+            <h4 id="IM_Recently" >Recently</h4>
+            <dl class="IM_Chatting-List">
+             <!--   <dd class="IM_ChattingUser"  ><span>Template</span><em>+3</em><a href="javascript:void(0)">x</a></dd> -->
+            </dl>
+            <dl id="IM_Recently-List" >
+            	<dd class="IM_ChattingUser"><span>Recently</span></dd>
+                <dd class="IM_ChattingUser"><span>Recently</span></dd>
+                <dd class="IM_ChattingUser"><span>Recently</span></dd>
+                <dd class="IM_ChattingUser"><span>Recently</span></dd>
+                <dd class="IM_ChattingUser"><span>Recently</span></dd>
+                <dd class="IM_ChattingUser"><span>Recently</span></dd>
+            </dl>
+        </div>
+        <div class="IM_UserWindow">
+      <!--  <div id="IM_SysMsgBar" ><span>System Message</span></div> -->
+        <div class="IM_PersonWin" sid="{#sid}">
+            <div class="IM_MsgWinHeader" onselectstart="return false">
+                <div class="IM_ChattingTitle">
+                    <span title="User State" class="IM_TargetState {#groupstate}">{#name}</span>
+
+            </div>
+            	
+                <div class="IM_UserWinclose" onselectstart="return false"  closeid="{#sid}" title="关闭">×</div><div class="IM_btn_ChangeWin"></div><div class="IM_MinSizeWin" title="最小化">_</div>
+            </div>
+
+            <div class="IM_MsgWindow" winid="{#sid}">
+               <!-- 消息体 -->
+            </div>
+
+    </div> <!-- per win end! -->
+        <div class="IM_WinBottom"></div>
+    <ul class="IM_TB-fontList"><span>Font Size</span>
+            <li value="12">12px</li><li value="13">13px</li><li value="14">14px</li><li value="15">15px</li>
+            <li value="16">16px</li><li value="17">17px</li>
+    </ul>
+    <div class="IM_ToolBar"><a class="IM_TB-fontOption" href="javascript:void(0)">A</a></div>
+    <div class="IM_UserInputBox">
+            <textarea class="IM_UserTextarea"  name="_UserText"></textarea>
+
+    </div>
+    <div class="IM_SendTypeOption">
+            <h3>Send Type:</h3>
+            <span class="IM_unactive" value="Enter">Enter</span>
+            <span class="IM_active" value="Ctrl_Enter">Ctrl+Enter</span>
+    </div>
+    <a class="IM_btn_Send" title="Send Message" href="javascript:void(0)">Send</a>
+        </div>
+
+</div>
+      <!--Group聊天窗口end-->
+<!--Group Chatting Box-->
+
+
+<!-- 主窗口 -->
+<div id="IM_MainPanel">
+<div id="IM_TargetInfo"></div>
+<div id="IM_DialoBox"><div class="IM_DialoClose">×</div><div class="IM_DialoHead"><h2>Master</h2><h4>Login</h4></div><p>
+<label>用户名<br /><input id="IM_SignInName"  class="IM_DialoInput" size="20px" type="text" /></label><label>密码<br/><input id="IM_SignInPw" class="IM_DialoInput" size="20px" type="password"/></label></p><a id="IM_btn_SignIn" type="button" >登 陆</a></div>
+<div id="IM_MainBox">
+        <div class="IM_MinBar" title="最小化"><em>Min</em></div>
+        <div class="IM_head">
+                <span id="IM_nickname">Your Name</span>
+                <span id="IM_status" class="IM_online">Online</span>
+        </div>
+
+        <!-- 个人内容 -->
+        <div class="IM_content">
+
+                <div id="IM_Master">
+                        <h3 class="IM_category">Master</h3><a href="javascript:void(0)" class="IM_MasterSignIN">登 录</a><a href="javascript:void(0)" class="IM_MasterSignOut">退 出</a>
+                        <ul>        
+                                <li class="IM_listitem IM_MasterOffline" sid="master:12345"><span>中国老虎</span></li>
+                                <li class="IM_listitem IM_MasterOnline" sid="master:123456"><span>HKLLO</span></li>
+                        </ul>
+                </div>
+<!--
+                <div id="IM_Recently">
+                        <h3 class="IM_category">Recently</h3>
+                        <ul>      
+                                <li class="IM_listitem IM_near"><span> sadf</span></li>
+                                <li class="IM_listitem IM_blacklist"><span> sadf</span></li>
+                        </ul>
+                </div>
+-->
+                <div id="IM_WithU"><!--在线列表 h3.IM_category ul li.IM_listitem IMnear IM_backlist-->
+                        <h3 class="IM_category">9000-WithU</h3>
+                        <ul>
+                        </ul>
+                </div>
+        </div>
+
+        <div class="IM_footer">
+                <div id="IM_group" ><span></span>GROUP</div>
+                <div class="IM_setting"><span></span>SETTING</div>
+        </div>
+</div>
+<!-- 组别页面 -->
+<div id="IM_GroupBox">
+		<div class="IM_MinBar" title="Minimize The Window"><em>Min</em></div>
+        <div class="IM_head">
+                <span>Group</span>
+                <div id="IM_group_add" title="Add An Group" ></div>
+        </div>
+
+        <div class="IM_content">
+                <div id="IM_group_default">
+                        <h3 class="IM_category">Default</h3>
+                        <ul>
+                                <li class="IM_listitem" sid="group:default"><span>NoChat</span></li>
+                        </ul>
+                </div>  
+                <div id="IM_group_person"> 
+                        <h3 class="IM_category">Discuss</h3>
+                        <ul>
+                                <li class="IM_listitem" sid="group:123456"><span>Happy-Html5</span></li>
+                                <li class="IM_listitem" sid="group:123444"><span>Happy</span></li>
+                                <li class="IM_listitem IM_blacklist" sid="group:111111" ><span>sad</span></li>
+                        </ul>
+                </div>
+        </div>
+
+        <div class="IM_footer">
+                <div class="IM_home" ><span></span>HOME</div>
+                <div class="IM_setting"><span></span>SETTING</div>
+        </div>
+</div>
+<!-- 组别页面 end! -->
+
+<!-- 设置页面 -->
+<div id="IM_SettingBox">
+ 		<div class="IM_MinBar" title="Minimize The Window"><em>Min</em></div>
+        <div class="IM_head IM_setting_head">
+                <span>SETTING</span>
+        </div>
+        <div class="IM_content_setting">
+                <ul>
+                        <li class="IM_setitem"><span>Name</span>
+                        <input id="IM_setname" class="IM_set" type="text" />
+                        </li>
+                        <li class="IM_setitem">
+                        <span>Gender</span>
+                        <div id="IM_OP_Gender" class="IM_set_option" >
+                                <span class="IM_active">Mr</span>
+                                <span class="IM_unactive">Miss</span>
+                        </div>
+                        </li>
+                        <li class="IM_setitem"><span>City</span>
+                         <input id="IM_setcity" class="IM_set" type="text" />
+                        </li>
+                        <li  class="IM_setitem">
+                        <span>Sound</span>
+                        <div id="IM_OP_Sound" class="IM_set_option" >
+                                <span class="IM_active">ON</span>
+                                <span class="IM_unactive">OFF</span>
+                        </div>
+
+                        </li>
+                        <li class="IM_setitem">
+                        <span>Animation</span>
+                        <div id="IM_OP_Animation" class="IM_set_option" >
+                                <span class="IM_active">ON</span>
+                                <span class="IM_unactive">OFF</span>
+                        </div>
+
+
+                        </li>             
+                        <li class="IM_setitem"><span>Notice</span></li>
+                        <li class="IM_setitem"><span id="IM_Tutorial">Tutorial</span></li>             
+                        <li class="IM_setitem"><span>About</span></li> 
+                </ul>            
+        </div>
+        <div class="IM_footer">
+                <div class="IM_btn_save"><span></span>&nbsp;</div>
+                <div class="IM_btn_back" ><span></span>&nbsp;</div>
+        </div>
+</div>
+<!-- 设置页面 end！-->
+
+</div><!--MainPanel-->
+
+    </div>
+  </body>
+</html>

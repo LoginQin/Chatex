@@ -4,7 +4,9 @@
  */
 
 var express = require('express')
-, routes = require('./routes'); 
+, routes = require('./routes'),
+  url = require('url'),
+  fs = require('fs'); 
   
 //parseCookie = require('connect').utils.parseCookie,
 //MemoryStore = require('connect/lib/middleware/session/memory');
@@ -46,8 +48,10 @@ app.get('/', routes.index);
 app.get('/user/:id', routes.user);
 app.post('/action', routes.action);
 app.get('/chat', function(req, res){
-  res.render('chat', {title: 'Chat-Room', layout: 'mylayout'});
-
+  //res.render('chat', {title: 'Chat-Room', layout: 'mylayout'});
+  var realpath = __dirname + '/views/' + url.parse('no2chat.html').pathname;
+  var txt = fs.readFileSync(realpath);
+  res.end(txt);
 });
 function html_encode(str){   
   var s = "";   
