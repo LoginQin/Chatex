@@ -490,9 +490,9 @@ div.IM_btn_save, div.IM_btn_back{
 /*Chat Box*/
 #IM_ChatBox{
 	display:none;
-	width:470px;
+	width:480px;
 	height:455px;
-	left:-30px;
+	left:-50px;
 	top:0px;
 	background:#fff;
 	box-shadow: 1px 1px 5px 1px #999;
@@ -553,8 +553,8 @@ div.IM_btn_save, div.IM_btn_back{
 	display:none;
 }
 .IM_UserWindow{
-	width:367px!important;
-	width:345px;
+	width:377px!important;
+	width:355px;
 	height:455px;
 	float:left;
 	border: 1px solid #999999;
@@ -594,7 +594,6 @@ div.IM_btn_save, div.IM_btn_back{
 }
 a.IM_TB-fontOption{
 	color:#999;
-	border:1px solid #fff;
 	font-weight:600;
 	text-decoration:none;
 	padding:0px 5px;
@@ -653,23 +652,23 @@ textarea.IM_UserTextarea{
 }
 
 .IM_SendTypeOption{
-    float: left;
+    display: inline;
     font-size: 15px;
     height: 25px;
     line-height: 24px;
-    opacity: 0.3;
     text-align: right;
-    width: 265px!important;
+	cursor:default;
+    width: 265px !important;
 	width:245px;
 }
 
 
 .IM_SendTypeOption h3{
-    color: #000000;
+   color: #999999;
     display: inline;
-    font-weight: 300;
+    font-size: 13px;
+    font-weight: 600;
     height: 25px;
-	font-size:12px;
 }
 .IM_MsgWinHeader{
 	margin-top:2px;

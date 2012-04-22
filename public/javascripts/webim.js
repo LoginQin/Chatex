@@ -282,7 +282,7 @@ $(function(){
   categoryAnimation(wu, wl);
   var gc = $("#IM_group_person .IM_category"),
       gl = $("#IM_group_person ul");
-  categoryAnimation(gc, gl);
+  //categoryAnimation(gc, gl);
 
   /*按钮切换页面*/
   var SettingBox = $("#IM_SettingBox"),
@@ -1473,7 +1473,8 @@ $(function(){
 			});
 		};
 		if(name == ''  && pw == ''){
-			//shakeDialo();
+			shakeDialo();
+            return;
 		}
 		socket.emit('Master Sign In', {name: name, pw: pw}, function(ok, data){
 			if(ok){
