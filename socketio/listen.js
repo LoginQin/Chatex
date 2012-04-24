@@ -235,7 +235,11 @@ exports.listener = function(io){
 
     socket.on('private message', function(to, data, callback){
       var target = onlinesocket[to];
-      var sessionid = SessionList[socket.id];
+      var sessionid = SessionList[socket.id];//根据来的socket找出它的sessionid;
+      if(sessionid == to){
+        callback(true);
+        return; //用户向自己发消息,不处理,用户可以试验命令,如果是测试模式需要打开查看发送与接收是否正确
+      }
       if(to.match(/master/i) && !target){ //如果是向主人发送信息,并且不在线
         MasterMsg[to] ? MasterMsg[to].push({from:sessionid,data:data}) : MasterMsg[to] = [{from:sessionid,data:data}];
         socket.emit('message error', '该Master不在线,已为您保存消息,Master登录才能看见,如果需要主人联系您,建议您留下联系方式');

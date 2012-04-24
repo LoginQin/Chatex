@@ -1417,7 +1417,7 @@ $(function(){
 	$(".IM_listitem span").live( 
  	{
   	   mouseover : function(){
-		 TargetInfo.css({top: $(this).parent()[0].offsetTop - $(this).parents(".IM_content").scrollTop() + "px", right:"-"+ (MainBox[0].offsetLeft - 2) + "px", display:"none"});
+		 TargetInfo.css({top: $(this).parent()[0].offsetTop - $(this).parents(".IM_content").scrollTop() + "px", right:"-"+ (MainBox[0].offsetLeft - 5) + "px", display:"none"});
 		 checkAndShowTargetInfo($(this).parent().attr("sid"));
   	   },
    	  mouseout : function(){
@@ -1464,7 +1464,7 @@ $(function(){
 		var name = $('#IM_SignInName').val().replace(' ', ''),
 		pw = $('#IM_SignInPw').val().replace(' ', '');
 		var shakeDialo = function(){
-			LoginDialo.animate({left:'20px'},160, function(){
+			LoginDialo.animate({left:'30px'},160, function(){
 			   	LoginDialo.animate({left:'130px'}, 320, function(){
 					LoginDialo.animate({left:'100px'}, 160, function(){
 						setTimeout(function(){$('#IM_SignInPw').val('');}, 300);

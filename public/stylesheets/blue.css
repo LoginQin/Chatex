@@ -7,7 +7,8 @@
 	bottom:500px;
 	right:700px;
 	padding:0;
-	margin:0;	
+	margin:0;
+	cursor:default;
 	font-family: Leelawadee,"微软雅黑", sans-serif, Arial;
 	z-index: 500px;
 }
@@ -147,11 +148,13 @@
 	text-align:left;
 }
 #IM_MainBox{
-	border:1px solid  #999;
+	border:1px solid #999\9;
+	*border:1px solid #999\9;
 	position:absolute;
 	background-color:#FFF;
 	width:219px;
 	z-index:600;
+	box-shadow: 0px 0px 5px 2px #CCCCCC;
 	overflow:hidden;
 	left:455px;
 }
@@ -277,10 +280,9 @@ span#IM_nickname{
     font-size: 9px;
     font-weight: 500;
     height: 70px;
-    margin: 1px 0 1px 1px;
     text-align: center;
-	width:107px!important;
-	width:105px;
+	width:108px!important;
+	width:106px;
 }
 .IM_footer :hover{
 	background-color:#43b1ff;
@@ -302,8 +304,7 @@ span#IM_nickname{
 }
 .IM_setting {
 	border-left:1px solid #999;
-	margin-right:1px;
-	padding-left:1px;
+	padding-left:2px;
 }
 .IM_setting span{
     background: url("../images/blue.png") no-repeat scroll -35px 0 transparent;
@@ -358,7 +359,9 @@ span#IM_nickname{
 /*IM_GroupBox*/
 #IM_GroupBox{
 	background-color:#fff;
-	border:1px solid  #999;
+	border:1px solid  #999\9;
+	*border:1px solid  #999\9;
+	box-shadow:0px 0px 5px 2px #ccc;
 	position:absolute;
 	width:219px;
 	z-index:500;
@@ -392,7 +395,9 @@ span#IM_nickname{
 /*IM_SettingBox*/
 #IM_SettingBox{
 	background-color:#FFF;
-	border:1px solid  #999;
+	border:1px solid #999\9;
+	*border:1px solid #999\9;
+	box-shadow:0px 0px 10px 0px #ccc;
 	position:absolute;
 	width:0px;
 	display:none;
@@ -400,7 +405,7 @@ span#IM_nickname{
 	left:678px;
 	overflow:hidden;
 	z-index:10000;
-	height:456px;
+	height:454px;
 }
 .IM_setting_head{
 	font-weight:600;
@@ -473,7 +478,7 @@ div.IM_btn_save, div.IM_btn_back{
 }
 .IM_btn_back{
     border-left: 1px solid #999999;
-    padding-left: 1px;
+    padding-left: 2px;
 }
 .IM_btn_back span{
 	display:block;
@@ -501,9 +506,12 @@ div.IM_btn_save, div.IM_btn_back{
 }
 
 .IM_ChatList{
-    border-bottom: 1px solid #999999;
-    border-left: 1px solid #999999;
-    border-top: 1px solid #999999;
+    border-bottom: 1px solid #999999\9;
+    border-left: 1px solid #999999\9;
+    border-top: 1px solid #999999\9;
+	*border-bottom: 1px solid #999999;
+    *border-left: 1px solid #999999;
+    *border-top: 1px solid #999999;
     float: left;
     font-size: 11px;
     height: 455px;
@@ -553,11 +561,15 @@ div.IM_btn_save, div.IM_btn_back{
 	display:none;
 }
 .IM_UserWindow{
-	width:377px!important;
+	width:379px!important;
 	width:355px;
+	width:377px\9!important;
+	*width:377px;
 	height:455px;
 	float:left;
-	border: 1px solid #999999;
+	border-left: 1px solid #ccc;
+	border: 1px solid #999\9;
+	*border: 1px solid #999;
 }
 #IM_SysMsgBar{
     height: 30px;
@@ -584,8 +596,9 @@ div.IM_btn_save, div.IM_btn_back{
 	overflow-y:auto;
 }
 .IM_UserInputBox{
-	width:353px;
-	border-right:1px solid #999;
+	width:377px;
+	*border-right:1px solid #999;
+	*border-right:1px solid #999\9;
 	line-height:1px;
 }
 .IM_ToolBar{
@@ -639,8 +652,10 @@ ul.IM_TB-fontList{
 }
 textarea.IM_UserTextarea{
 	height:91px;
-	width:361px!important;
-	width:341px;
+	width:374px!important;
+	width:373px\9!important;
+	*width:373px!important;
+	width:354px;
 	border:none;
 	resize: none;
 	overflow-x: hidden;
