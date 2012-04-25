@@ -1,0 +1,258 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+html, body {
+    font-family: "微软雅黑",sans-serif,Arial;
+    height: 100%;
+    overflow: hidden;
+    width: 100%;
+    text-align:center;
+}
+span {
+    white-space: normal;
+    word-wrap: break-word;
+}
+.IM_set_option {
+    float: right;
+    height: 38px;
+    width: 105px;
+}
+.IM_active {
+    color: #3399FF;
+    cursor: pointer;
+    font-weight: 500;
+    margin-left: 10px;
+}
+.IM_unactive {
+    color: #CCCCCC;
+    cursor: pointer;
+    margin-left: 10px;
+}
+#IM_ChatBox {
+    height: 99%;
+    width: 99%;
+    margin:0 auto;
+    text-align:left;
+}
+#IM_ChatList {
+    border: 1px solid #999999;
+    float: left;
+    font-size: 13px;
+    height: 100%;
+    line-height: 1px;
+    margin: 0 auto;
+    overflow: hidden;
+    width: 15%;
+}
+#IM_ChatList h3 {
+    background: none repeat scroll 0 0 #84D747;
+    color: #FFFFFF;
+    font-size: 43px;
+    height: 28px;
+    line-height: 20px;
+    margin-top: 2px;
+}
+#IM_UserWindow {
+    border: 1px solid #999999;
+    float: right;
+    height: 100%;
+    margin-right: 1px;
+    width: 84% !important;
+}
+#IM_SysMsgBar{
+	position:absolute;
+	width:78%;
+	height:30px;
+	bottom:30%;
+	text-align:center;
+    display:none;
+}
+#IM_SysMsgBar span{
+	font-size:12px;
+	line-height:28px;
+	padding:5px 15px;
+	background:#39f;
+	color:#fff;
+}
+#IM_MsgWindow {
+    height: 100%;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    padding: 3px;
+}
+#IM_UserInputBox {
+    border-right: 1px solid #999999;
+    height: 22%;
+    width: 100%;
+}
+#IM_ToolBar {
+    border-bottom: 1px solid #CCCCCC;
+    height: 23px;
+}
+#IM_TB-fontOption {
+    border: 1px solid #FFFFFF;
+    color: #999999;
+    font-weight: 600;
+    margin-left: 5px;
+    padding: 0 5px;
+    text-decoration: none;
+}
+#IM_TB-fontOption:hover {
+    background: none repeat scroll 0 0 #E671B8;
+    color: #FFFFFF;
+}
+#IM_TB-fontList {
+    background: none repeat scroll 0 0 #FFFFFF;
+    border: 1px solid #E671B8;
+    display: none;
+    list-style: square inside none;
+    margin-left: 30px;
+    overflow: hidden;
+    position: absolute;
+    z-index: 500;
+}
+#IM_TB-fontList span {
+    background: none repeat scroll 0 0 #E671B8;
+    color: #FFFFFF;
+    font-size: 12px;
+}
+#IM_TB-fontList li {
+    font-size: 12px;
+    margin: 1px 0;
+    padding-left: 1px;
+}
+#IM_TB-fontList li:hover {
+    background: none repeat scroll 0 0 #E671B8;
+    color: #FFFFFF;
+    cursor: pointer;
+}
+#IM_UserTextarea {
+    border: medium none;
+    font-size: 14px;
+    height: 95%;
+    overflow-x: hidden;
+    overflow-y: auto;
+    padding: 2px;
+    resize: none;
+    width: 99% !important;
+}
+#IM_SendTypeOption {
+    float: left;
+    font-size: 15px;
+    height: 25px;
+    line-height: 24px;
+    opacity: 0.3;
+    text-align: right;
+    width: 80% !important;
+}
+#IM_SendTypeOption h3 {
+    color: #000000;
+    display: inline;
+    font-size: 12px;
+    font-weight: 300;
+    height: 25px;
+}
+.IM_MsgWinHeader {
+    height: 28px;
+    margin-top: 2px;
+}
+.IM_TargetState {
+    border-left: 10px solid #84D747;
+    float: left;
+    height: 28px;
+    padding-left: 3px;
+    padding-right: 3px;
+    text-align: center;
+    text-decoration: none;
+}
+.IM_PersonWin {
+    height: 69%;
+    width: 100%;
+}
+.IM_UserWinclose {
+    background: url("images/cancel.png") no-repeat scroll center center transparent;
+    cursor: pointer;
+    float: right;
+    height: 15px;
+    margin-right: 2px;
+    width: 15px;
+}
+.IM_UserWinclose:hover {
+    opacity: 0.5;
+}
+.IM_ChattingTitle {
+    float: left;
+    font-size: 15px;
+    line-height: 28px;
+    overflow: hidden;
+    text-align: center;
+    width: 170px;
+}
+.IM_MsgBody-Send, .IM_MsgBody-Get {
+    clear: both;
+    font-size: 12px;
+    line-height: 22px;
+    margin: 2px 4px;
+}
+.IM_MsgHeader-Send {
+    color: green;
+}
+.IM_MsgHeader-Get {
+    color: #3399FF;
+}
+.IM_MsgContent-Send, .IM_MsgContent-Get {
+    font-size: 13px;
+    padding: 0 0 5px 12px;
+    white-space: normal;
+    word-wrap: break-word;
+}
+.IM_Msg-footer-Send, .IM_Msg-footer-Get {
+    font-size: 10px;
+    margin-bottom: 3px;
+}
+.IM_Msg-footer-Send {
+    color: #3399FF;
+}
+.IM_Msg-footer-Get {
+    color: green;
+}
+#IM_btn_Send {
+    background: none repeat scroll 0 0 #3399FF;
+    border: 1px solid #2194D0;
+    color: #FFFFFF;
+    float: right;
+    font-size: 18px;
+    height: 23px;
+    line-height: 21px;
+    margin-left: 10px;
+    text-align: center;
+    text-decoration: none;
+    width: 80px;
+}
+#IM_btn_Send:hover {
+    opacity: 0.8;
+}
+.IM_ChattingUser {
+    display: list-item;
+    line-height: 30px;
+    list-style: disc inside none;
+    overflow: hidden;
+    padding-left: 5px;
+}
+.IM_ChattingUser:hover {
+    background: none repeat scroll 0 0 #F1960A;
+    color: #FFFFFF;
+    cursor: pointer;
+}
+.IM_ChattingUser a {
+    color: #FFFFFF;
+    float: right;
+    line-height: 26px;
+    margin-right: 4px;
+    text-decoration: none;
+}
+.IM_ChattingUser a:hover {
+    color: #000000;
+}
+

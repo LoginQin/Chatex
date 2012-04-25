@@ -1,0 +1,1150 @@
+*{
+	margin:0;
+	padding:0;
+}
+* html #WebIM{behavior:url('hover.htc');}
+#WebIM{
+	_position:absolute;
+	position:fixed;
+	bottom:500px;
+	right:700px;
+	padding:0;
+	margin:0;
+	cursor:default;
+	font-family: Leelawadee,"微软雅黑", sans-serif, Arial;
+	z-index: 500px;
+}
+#WebIM span{
+	word-wrap: break-word;
+	white-space:normal;
+}
+#WebIM pre{
+	padding:1px;
+	line-height:20px;
+}
+#WebIM ul,dd,li{
+	margin:0;
+	padding:0;
+}
+#WebIM input{
+	background:#fff;
+	box-shadow: 0px 0px 0px 0px #fff;
+}
+#WebIM dt{
+	font-weight:500;
+}
+#IM_MainPanel{
+	display:none;
+	_position:absolute;
+	_right:700px;
+}
+.IM_MinSizeWin,.IM_UserWinclose,.IM_DialoClose,.IM_MinBar em,#IM_status,.IM_listitem span,#IM_online{
+	-moz-transition:all .5s ease;
+    -webkit-transition:all .5s ease;
+    -o-transition:all .5s ease;
+    -ms-transition:all .5s ease;
+    transition:all .5s ease;
+}
+#IM_MiniBox{
+    background: none repeat scroll 0 0 #FFFFFF;
+    border: 1px solid #CCCCCC;
+    color: #666666;
+    height: 60px;
+    padding: 0;
+    position: fixed;
+	_position:absolute;
+    right: 100px;
+	_right: 100px;
+    text-align: center;
+    top: 480px;
+	_top: 300px;
+    width: 70px;
+	_width:80px;
+	_height:70px;
+	cursor:pointer;
+    z-index: 10000;
+}
+
+.IM_MinBar{
+    color: #ddd;
+    display: block;
+    font-size: 9px;
+    height: 18px;
+    padding: 0 0 0 2px;
+    position: absolute;
+    width: 99%;
+    z-index: 200;
+	cursor:pointer;
+	*left:0px;
+}
+.IM_MinBar em{
+	font-style:normal;
+}
+.IM_MinBar:hover{
+    filter:alpha(opacity=100 finishopacity=50 style=1 startx=0,starty=0,finishx=0,finishy=150) progid:DXImageTransform.Microsoft.gradient(startcolorstr=#d4f1fc,endcolorstr=#ffffff,gradientType=0);
+    -ms-filter:alpha(opacity=100 finishopacity=50 style=1 startx=0,starty=0,finishx=0,finishy=150) progid:DXImageTransform.Microsoft.gradient(startcolorstr=#d4f1fc,endcolorstr=#ffffff,gradientType=0);/*IE8*/
+    background:#d4f1fc; /* 一些不支持背景渐变的浏览器 */
+    background:-moz-linear-gradient(top, #d4f1fc, rgba(255, 255, 255, 0.5));
+    background:-webkit-gradient(linear, 0 0, 0 bottom, from(#d4f1fc), to(rgba(255, 255, 255, 0.5)));
+    background:-o-linear-gradient(top, #d4f1fc, rgba(255, 255, 255, 0.5));
+	color:#84D747;
+}
+.IM_MinBar:hover em{
+	margin:0 0 0 10px;
+	margin:0\9;
+	*margin:0;
+	font-style:italic;
+}
+#IM_MiniBox span{
+	-moz-transition:margin-left .5s ease;
+    -webkit-transition:margin-left .5s ease;
+    -o-transition:margin-left .5s ease;
+    -ms-transition:margin-left .5s ease;
+    transition:margin-left .5s ease;
+}
+
+#IM_MiniBox:hover{
+	background:#43B1FF;
+	color:#fff;
+	border:1px solid #39f; 
+}
+#IM_MiniBox:hover span{
+	margin-left:10px;
+	margin-left:3px\9;
+	*margin-left:3px;
+}
+
+#IM_NoticeIMG{
+    float: left;
+    font-size: 14px;
+    height: 26px;
+    line-height: 20px;
+    margin: 15px 0 0 4px;;
+    width: 30px;
+}
+.IM_IMG-online{
+	background: url("../images/chat_logo.png") no-repeat scroll center center transparent;
+	color:#fff;
+}
+.IM_IMG-offline{
+	background: url("../images/chat_logo.png") no-repeat scroll -1px center transparent;
+}
+.IM_IMG-hover{
+	background: url("../images/chat_logo.png") no-repeat scroll -58px center transparent;
+	color:#39f;
+}
+#IM_MiniBox b{
+    display: inline-block;
+    font-size: 12px;
+    height: 40px;
+    line-height: 55px;
+    margin: 0 0 0 2px;
+    overflow: hidden;
+    text-align: left;
+    width: 30px;
+}
+#IM_MiniBox span{
+    display: block;
+    font-size: 10px;
+    height: 15px;
+    line-height: 15px;
+    margin: 3px;
+    overflow: hidden;
+    position: absolute;
+    text-overflow: ellipsis;
+    top: 40px;
+    white-space: nowrap;
+    width: 70px;
+	text-align:left;
+	*position:relative;
+    *top:2px;
+	_top:5px;
+}
+#IM_MainBox{
+	border:1px solid #999\9;
+	*border:1px solid #999\9;
+	position:absolute;
+	background-color:#FFF;
+	width:219px;
+	z-index:600;
+	box-shadow: 0px 0px 5px 2px #CCCCCC;
+	overflow:hidden;
+	left:455px;
+}
+.IM_head{
+	font-weight:100;
+	font-size:38px;
+	color:#43b1ff;
+	height:45px;
+	margin:8px 0px 10px 10px;
+	cursor:default;
+}
+.IM_head span{
+	line-height:40px;
+}
+span#IM_nickname{
+    display:inline-block;
+    height: 45px;
+    left: 10px;
+    overflow: hidden;
+    position: absolute;
+    text-overflow: ellipsis;
+    top: 12px;
+	font-size:35px;
+    white-space: nowrap !important;
+    width: 170px;
+}
+#IM_status{
+    cursor: pointer;
+    font-family: "微软雅黑",sans-serif,Arial;
+    font-size: 14px;
+    height: 23px;
+    line-height: 23px;
+    padding: 0 3px;
+    position: absolute !important;
+    right: 0;
+    top: 23px;
+}
+#IM_status:hover{
+	padding-right:15px;
+}
+
+.IM_online{
+	border-right:5px solid #0C0;
+	color:#0C0;
+	background: #fff;
+}
+
+.IM_alone{
+	border-right:5px solid #F90;
+	color:#F90;
+	background:#fff;
+}
+
+.IM_content{
+	overflow-y: auto;
+	overflow-x: hidden;
+	height:320px;
+}
+	
+.IM_category{
+	font-size:17px;
+	font-weight:500;
+	height:35px;
+	line-height:35px;
+	color:#43b1ff;
+	margin:0;
+	display:inline-block;
+	padding-left:5px;
+	cursor:default;
+	border-left:3px solid #fff;
+	border-top:1px solid #fff;
+	background-repeat:no-repeat;
+	background-position: right;
+	cursor:default;
+	width:90%;
+}
+
+.IM_listitem {
+	border-bottom:1px  solid  #fff;
+	font-size:12px;
+	height:28px;
+	display:block;
+	list-style:none;
+	padding-left:15px;
+	line-height:28px;
+	cursor:default;
+	border-left:3px solid #fff;
+	overflow:hidden;
+	}
+.IM_listitem span{
+	cursor:default;
+	display: inline-block;
+    width: 140px;
+}
+.IM_listitem span:hover{
+	color:green;
+	margin-left:-8px;
+	margin-left:0px\9;
+	*margin-left:0px;
+}
+.IM_listitem:hover {
+	background:#e5f6f9;
+	border-left:3px solid #e5f6f9;
+}
+
+/* 正在聊天对象*/
+.IM_Li-chatwith{
+	border-left:3px solid #84d747!important;
+	*border-left:3px solid #84d747;
+}
+
+.IM_Li-chatwith:hover{
+	border-left:3px solid #84d747;
+}
+.IM_footer{
+	border-top:1px  solid #999;
+	height:70px;
+	text-align:center;
+}
+.IM_footer div{
+    color: #000000;
+    display: block;
+    float: left;
+    font-size: 9px;
+    font-weight: 500;
+    height: 70px;
+    text-align: center;
+	width:108px!important;
+	width:106px;
+}
+.IM_footer :hover{
+	background-color:#43b1ff;
+	color:#FFF;
+	cursor:pointer;
+}
+#IM_group{
+	
+}
+#IM_group span{
+    background: url("../images/blue.png") no-repeat scroll 0 0 transparent;
+    display: block;
+    height: 35px;
+    margin: 10px auto 2px;
+    width: 35px;
+}
+#IM_group:hover span{
+  background: url("../images/blue.png") no-repeat scroll 0 -35px transparent;
+}
+.IM_setting {
+	border-left:1px solid #999;
+	padding-left:2px;
+}
+.IM_setting span{
+    background: url("../images/blue.png") no-repeat scroll -35px 0 transparent;
+    display: block;
+    height: 35px;
+    margin: 10px auto 2px;
+    width: 35px;
+}
+
+.IM_setting:hover span {
+	background: url("../images/blue.png") no-repeat scroll -35px -36px transparent;
+}
+	
+.IM_near{
+	border-left:3px solid #F00!important;
+}
+.IM_MasterOffline{
+	color:#ccc;
+}
+.IM_MasterOnline{
+	color:#F00;
+}
+.IM_MasterSignIN,.IM_MasterSignOut{
+    color: #ccc;
+	color: #ccc!important;
+    font-size: 11px;
+    left: 145px;
+    margin: 12px;
+    position: absolute;
+    text-decoration: none;
+	*left:130px;
+	*top:55px;
+}
+.IM_MasterSignIN:hover,.IM_MasterSignOut:hover{
+	color:#E671B8;
+	text-decoration:underline;
+}
+.IM_MasterSignOut{
+	display:none;
+}
+.IM_near:hover{
+	border-left:3px solid #F00;
+	color:#f00;
+}
+.IM_blacklist{
+	border-left:3px solid #000!important;
+	color:#999;
+	text-decoration:line-through;
+	background:url(../images/msg_off3.png) right no-repeat;
+}
+.IM_blacklist:hover{
+	border-left:3px solid #000;
+}
+/*IM_GroupBox*/
+#IM_GroupBox{
+	background-color:#fff;
+	border:1px solid  #999\9;
+	*border:1px solid  #999\9;
+	box-shadow:0px 0px 5px 2px #ccc;
+	position:absolute;
+	width:219px;
+	z-index:500;
+	left:455px;
+}
+#IM_group_add{
+    background: url("../images/adding.png") no-repeat scroll center center transparent;
+    cursor: pointer;
+    display: inline-block;
+    height: 40px;
+    margin-right: 10px !important;
+    position: relative !important;
+    top: 8px;
+    width: 40px;
+	left:40px;
+}
+#IM_group_add:hover{
+	top:9px;
+}
+.IM_home span{
+	background: url("../images/blue.png") no-repeat scroll -71px 0 transparent;
+    display: block;
+    height: 35px;
+    margin: 10px auto 2px;
+    width: 35px;
+}
+.IM_home:hover span{
+	background: url("../images/blue.png") no-repeat scroll -71px -35px transparent;
+}
+
+/*IM_SettingBox*/
+#IM_SettingBox{
+	background-color:#FFF;
+	border:1px solid #999\9;
+	*border:1px solid #999\9;
+	box-shadow:0px 0px 10px 0px #ccc;
+	position:absolute;
+	width:0px;
+	display:none;
+	/*======*/
+	left:678px;
+	overflow:hidden;
+	z-index:10000;
+	height:454px;
+	*height:446px;
+}
+.IM_setting_head{
+	font-weight:600;
+	font-size:15px;
+	height:20px;
+	cursor:default;
+	margin-top: 0;
+	line-height:20px;
+}
+.IM_content_setting{
+	height:353px;
+	_height:325px;
+	*overflow-y:auto;
+	*height:345px;
+}
+.IM_setitem{
+	font-size:18px;
+	height:40px;
+	line-height:40px;
+	margin-left:10px;
+	list-style:none;
+	display:block;
+	text-align:left;
+	color:#000;
+	font-weight:lighter;
+	cursor:default;
+}
+.IM_setitem span{
+	float:left;
+}
+.IM_setitem input{
+	float:right;
+	padding:0px;
+}
+.IM_set{
+	border:hidden;
+	border-bottom:1px solid #999;
+	width:123px;
+	height:20px;
+	margin: 9px 8px 0 0;
+	font-size:16px;
+	color:#43b1ff;
+	font-family:"微软雅黑", sans-serif, Arial;
+}
+.IM_set_option{
+	width:105px;
+	height:38px;
+	float:right;
+}
+.IM_active{
+	color:#43b1ff;
+	margin-left:10px;
+	cursor:pointer;
+	font-weight:500;
+}
+.IM_unactive{
+	color:#CCC;
+	margin-left:10px;
+	cursor:pointer;
+}
+div.IM_btn_save, div.IM_btn_back{
+	margin-bottom:1px;
+}
+.IM_btn_save span{
+    background: url("../images/blue.png") no-repeat scroll -109px -1px transparent;
+	display:block;
+	height:35px;
+	width:35px;
+	margin:18px auto;
+}
+.IM_btn_save:hover span{
+	 background: url("../images/blue.png") no-repeat scroll -109px -36px transparent;
+}
+.IM_btn_back{
+    border-left: 1px solid #999999;
+    padding-left: 2px;
+}
+.IM_btn_back span{
+	display:block;
+	height:35px;
+	width:35px;
+	margin:18px auto;
+	background: url("../images/blue.png") no-repeat scroll -146px -1px transparent;
+}
+
+.IM_btn_back:hover span{
+	background: url("../images/blue.png") no-repeat scroll -146px -36px transparent;
+}
+
+/*Chat Box*/
+#IM_ChatBox{
+	display:none;
+	width:480px;
+	_width:465px;
+	height:455px;
+	left:-50px;
+	top:0px;
+	background:#fff;
+	box-shadow: 1px 1px 5px 1px #999;
+	position:absolute;
+	z-index:1;
+	_left:500px;
+}
+
+.IM_ChatList{
+    border-bottom: 1px solid #999999\9;
+    border-left: 1px solid #999999\9;
+    border-top: 1px solid #999999\9;
+	*border-bottom: 1px solid #999999;
+    *border-left: 1px solid #999999;
+    *border-top: 1px solid #999999;
+    float: left;
+    font-size: 11px;
+    height: 455px;
+    line-height: 40px;
+    overflow: hidden;
+    width: 100px;
+	-moz-user-select: none;
+	cursor:default;
+}
+.IM_ChatList h3 {
+    cursor: pointer;
+    display: inline-block;
+    float: left;
+    font-size: 16px;
+    font-weight: 100;
+    margin: 0 0 0 2px;
+}
+#IM_Recently{
+    color: #CCCCCC;
+    cursor: pointer;
+    display: inline-block;
+    float: right;
+    font-weight: 100;
+    margin: 0 2px;
+    overflow: hidden;
+    text-align: right;
+	position:absolute;
+	left:50px;
+}
+.IM_ChatList dl{
+	float:left;
+}
+.IM_Recent-active{
+	color:#000!important;
+	font-weight:100!important;
+}
+.IM_Clist-unactive{
+
+}
+.IM_Chatting-List{
+	width:100px;
+}
+#IM_Recently-List{
+    position:relative;
+    width: 0px;
+	left:100px;
+	display:none;
+}
+.IM_UserWindow{
+	width:379px!important;
+	width:355px;
+	width:377px\9!important;
+	*width:357px;
+	height:455px;
+	float:left;
+	border-left: 1px solid #ccc;
+	border: 1px solid #999\9;
+	*border: 1px solid #999;
+}
+#IM_SysMsgBar{
+    height: 30px;
+    position: absolute;
+    text-align: center;
+	cursor:default;
+	color:#000;
+	display:none;
+    z-index: 20000;
+}
+#IM_SysMsgBar span{
+	display:block;
+	background:#fff;
+    font-size: 12px;
+    line-height: 25px;
+	box-shadow: 1px 1px 5px 1px #ccc;
+	padding:2px;
+	border:1px solid #ccc\9;
+}
+.IM_MsgWindow{
+	height: 275px;
+	_height: 270px;
+	overflow-x: hidden;
+	overflow-y:auto;
+	margin:0 1px 0 1px;
+	width:99%\9;
+}
+.IM_UserInputBox{
+	width:377px;
+	*width:357px;
+	*border-right:1px solid #999;
+	*border-right:1px solid #999\9;
+	line-height:1px;
+}
+.IM_ToolBar{
+	height:23px;
+	border-bottom: 1px solid #ccc;
+}
+a.IM_TB-fontOption{
+	color:#999;
+	font-weight:600;
+	text-decoration:none;
+	padding:0px 5px;
+	line-height:22px;
+	font-size:16px;
+	margin-left:5px;
+}
+a.IM_TB-fontOption:hover{
+    color: #fff;
+    background: #e671b8;
+}
+ul.IM_TB-fontList{
+	position:absolute;
+	border:1px solid #e671b8;
+	z-index:500;
+	margin-left:30px!important;
+	margin-left:30px;
+	overflow:hidden;
+	background:#fff;
+	display:none;
+	line-height:15px;
+	box-shadow: 1px 1px 6px 1px #CCCCCC;
+	list-style:inside square;
+}
+.IM_TB-fontList span{
+	background:#e671b8;
+	color:#fff;
+	padding:2px;
+	width:60p;
+	font-size:12px;
+}
+.IM_TB-fontList li{
+	font-size:12px;
+	margin:4px 0 0;
+	list-style:square inside;
+	padding:1px;
+}
+
+.IM_TB-fontList li:hover{
+	cursor:pointer;
+	background:#e671b8;
+	color:#fff;
+}
+textarea.IM_UserTextarea{
+	height:91px;
+	width:374px!important;
+	width:373px\9!important;
+	*width:373px!important;
+	width:354px;
+	border:none;
+	resize: none;
+	overflow-x: hidden;
+	overflow-y:auto;
+	font-size:14px;
+	box-shadow:0 0 0 0 ;
+	background:#fff;
+	padding: 2px;
+}
+
+.IM_SendTypeOption{
+    display: inline;
+    font-size: 15px;
+    height: 25px;
+    line-height: 24px;
+    text-align: right;
+	cursor:default;
+    width: 265px !important;
+	width:245px;
+	_height:20px;
+}
+
+
+.IM_SendTypeOption h3{
+   color: #999999;
+    display: inline;
+    font-size: 13px;
+    font-weight: 600;
+    height: 25px;
+}
+.IM_MsgWinHeader{
+	height:28px;
+	*margin:4px 3px 0 0;
+	margin:0 3px 0 0\9;
+	margin-top:2px;
+}
+.IM_TargetState{
+    border-left: 8px solid #84D747;
+    float: left;
+    height: 28px;
+    padding-left: 3px;
+    padding-right: 3px;
+    text-align: center;
+	-moz-user-select: none;
+	-khtml-user-select: none;
+	user-select: none;
+    text-decoration: none;
+}
+.IM_State-Group{
+	border-left:8px solid #39f;
+}
+.IM_PersonWin{
+	display:none;
+	padding:1px 2px 0 0\9;
+	*pading:2px 2px 0 0;
+}
+.IM_WinBottom{
+    height: 311px;
+    width: 100%;
+}
+.IM_btn_ChangeWin{
+	height:20px;
+	width:20px;
+	float:right;
+	cursor:pointer;
+	margin:-2px 0 0 0;
+	background:url(../images/newwin_blue.png) center no-repeat;
+}
+.IM_btn_ChangeWin:hover{
+	opacity:0.5;
+	filter:alpha(opacity=50);
+}
+.IM_UserWinclose,.IM_DialoClose{
+	-moz-user-select: none;
+	height:20px;
+	text-align: center;
+    width: 30px;
+	margin: -2px 0 0;
+/*	background: url(../images/cancel.png) center no-repeat;*/
+	float:right;
+	font-size:23px;
+	line-height:18px;
+	cursor: pointer;
+	color:#43B1FF;
+}
+.IM_UserWinclose:hover,.IM_DialoClose:hover{
+	filter:alpha(opacity=100 finishopacity=50 style=1 startx=0,starty=0,finishx=0,finishy=150) progid:DXImageTransform.Microsoft.gradient(startcolorstr=#FDD9EC,endcolorstr=#ffffff,gradientType=0);
+    -ms-filter:alpha(opacity=100 finishopacity=50 style=1 startx=0,starty=0,finishx=0,finishy=150) progid:DXImageTransform.Microsoft.gradient(startcolorstr=#FDD9EC,endcolorstr=#ffffff,gradientType=0);/*IE8*/
+    background:#FDD9EC; /* 一些不支持背景渐变的浏览器 */
+    background:-moz-linear-gradient(top, #FDD9EC, rgba(255, 255, 255, 0.5));
+    background:-webkit-gradient(linear, 0 0, 0 bottom, from(#FDD9EC), to(rgba(255, 255, 255, 0.5)));
+    background:-o-linear-gradient(top, #FDD9EC, rgba(255, 255, 255, 0.5));
+	color:#300;
+}
+.IM_MinSizeWin{
+    cursor: pointer;
+    float: right;
+    font-size: 30px;
+    font-weight: 100;
+    height: 20px;
+    line-height: 1px;
+    margin: -2px 0 0 0;
+    text-align: center;
+    width: 28px;
+	color:#0c0;
+	_line-height:20px;
+}
+.IM_MinSizeWin:hover{
+	filter:alpha(opacity=100 finishopacity=50 style=1 startx=0,starty=0,finishx=0,finishy=150) progid:DXImageTransform.Microsoft.gradient(startcolorstr=#DBF7DC,endcolorstr=#ffffff,gradientType=0);
+    -ms-filter:alpha(opacity=100 finishopacity=50 style=1 startx=0,starty=0,finishx=0,finishy=150) progid:DXImageTransform.Microsoft.gradient(startcolorstr=#DBF7DC,endcolorstr=#ffffff,gradientType=0);/*IE8*/
+    background:#DBF7DC; /* 一些不支持背景渐变的浏览器 */
+    background:-moz-linear-gradient(top, #DBF7DC, rgba(255, 255, 255, 0.5));
+    background:-webkit-gradient(linear, 0 0, 0 bottom, from(#DBF7DC), to(rgba(255, 255, 255, 0.5)));
+    background:-o-linear-gradient(top, #DBF7DC, rgba(255, 255, 255, 0.5));
+	color:#FBB522;
+}
+.IM_IE7hack{
+	position:relative;
+	font-size:30px;
+	z-index:10px;
+	left:-5px;
+	top:2px;
+}
+.IM_ChattingTitle{
+    float: left;
+    font-size: 15px;
+    line-height: 28px;
+    overflow: hidden;
+	cursor:default;
+    text-align: center;
+    width: 270px;
+}
+.IM_MsgBody-Send, .IM_MsgBody-Get{
+    clear: both;
+    font-size: 12px;
+    margin: 2px 4px;
+	line-height: 22px;
+}
+.IM_MsgBody-Get{
+	-webkit-animation:animations .8s ease;
+	-moz-animation:animations .8s ease;
+	-ms-animation:animations .8s ease;
+	-o-animation:animations .8s ease;
+	animation:animations .8s ease;
+}
+.IM_MsgSending, .IM_MsgSendfail, .IM_MsgSendSucess{
+    font-size: 9px;
+    padding: 0 0 0 10px;
+    vertical-align: bottom;
+}
+.IM_MsgSending{
+    color: gray;
+}
+.IM_MsgSendfail{
+    color: red;
+    font-style: normal;
+}
+.IM_MsgSendSucess{
+    color: green;
+    font-style: normal;
+}
+@-moz-keyframes animations{
+	0%{-moz-transform:translate(20px);opacity:0;}
+	100%{-moz-transform:translate(0px);opacity:1;}
+}
+@-webkit-keyframes animations{
+	0%{-webkit-transform:translate(20px);opacity:0;}
+	100%{-webkit-transform:translate(0px);opacity:1;}
+}
+@-o-keyframes animations{
+	0%{-o-transform:translate(20px);opacity:0;}
+	100%{-o-transform:translate(0px);opacity:1;}
+}
+@-ms-keyframes animations{
+	0%{-ms-transform:translate(20px);opacity:0;}
+	100%{-ms-transform:translate(0px);opacity:1;}
+}
+@keyframes animations{
+	0%{transform:translate(20px);opacity:0;}
+	100%{transform:translate(0px);opacity:1;}
+}
+
+.IM_MsgHeader-Send,.IM_MsgName-Send{
+	color:green;
+	text-decoration:none;
+}
+
+.IM_MsgHeader-Get,a.IM_MsgName-Get{
+	color:#43b1ff;
+	text-decoration:none;
+}
+.IM_MsgName-Get:hover{
+	text-decoration:underline;
+}
+.IM_MsgContent-Send,.IM_MsgContent-Get{
+    font-size: 13px;
+    padding: 8px;
+	padding: 0 0 5px 12px;
+	word-wrap: break-word;
+	white-space:normal;
+	line-height:18px;
+}
+
+.IM_Msg-footer-Send, .IM_Msg-footer-Get{
+	font-size: 10px;
+	margin-bottom:3px;
+}
+.IM_Msg-footer-Send{
+	color:#43b1ff;
+}
+
+.IM_Msg-footer-Get{
+	color:green;
+}
+
+a.IM_btn_Send{
+    background: #43b1ff;
+	padding:1px;
+    color: #FFFFFF;
+    float: right;
+    font-size: 18px;
+    height: 23px;
+    line-height: 21px;
+    text-align: center;
+    text-decoration: none;
+    width: 80px;
+}
+.IM_btn_Send:hover{
+	opacity: 0.8;
+}
+/*聊天列表*/
+.IM_ChattingUser{
+    border-left: 3px solid #FFFFFF;
+    line-height: 30px;
+    overflow: hidden;
+    padding-left: 2px;
+	border-bottom:1px solid #fff;
+	border-top:1px solid #fff;
+}
+.IM_ChattingGroup{
+	border-left:3px solid #39f;
+}
+.IM_ChattingGroup:hover{
+	border-left:3px solid #39f!important;
+}
+.IM_ChattingUser:hover{
+    background: #e5f6f9;
+    color: #000;
+	border-left:3px solid #e5f6f9;
+	cursor:pointer;
+	border-bottom:1px solid #fff;
+	border-top:1px solid #fff;
+}
+/*聊天列表名字*/
+.IM_ChattingUser span{
+    display: block;
+    float: left;
+    height: 30px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 80px;
+	white-space:nowrap!important;
+}
+
+/*未读信息数*/
+.IM_ChattingUser em {
+	color:#f00;
+	font-size:10px;
+	position:absolute;
+	left:75px;
+	line-height:17px;
+}
+.IM_ChattingUser a{
+	color:#E3E3E3;
+	text-decoration:none;
+	float: right;
+    line-height: 26px;
+    margin-right: 4px;
+	position:absolute;
+	left:90px;
+}
+/*聊天列表来信息的闪动*/
+.IM_ChattingUser-msg{
+	border-left:3px solid #FBDB00;
+	background:#FBDB00;
+	color:#fff;
+}
+/*闪动结束,标示未读*/
+.IM_ChattingUser-uncheck{
+	border-left:3px solid #FBDB00!important;
+}
+.IM_ChattingUser a:hover{
+	color:#000;
+}
+
+#IM_GroupChatBox{
+	display:block;
+	width:460px;
+	height:455px;
+	left:-80px;
+	top:-30px;
+	background:#fff;
+	box-shadow: 2px 2px 6px 2px #999;
+	position:absolute;
+}
+/*目标信息*/
+#IM_TargetInfo{
+    border: 1px solid #999\9;
+	*border: 1px solid #999\9;
+    height: 170px;
+	display:none;
+    position: absolute;
+    top: 200px;
+    width: 200px;
+    z-index: 10000;
+	background:#fff;
+	box-shadow: 1px 1px 5px 1px #999999;
+	font-size:12px;
+	line-height:15px;
+	right:-453px;
+	opacity:0.7;
+	filter:alpha(opacity=70);
+	overflow:hidden;
+}
+#IM_TargetInfo dt{
+    background:#00CC00;
+    color: #FFFFFF;
+    font-size: 12px;
+    font-weight: 600;
+    height: 17px;
+    line-height: 17px;
+    margin: 2px 0;
+    padding: 2px 0 0 3px;
+    width: 65px;
+}
+#IM_TargetInfo dd{
+	height:18px;
+}
+#IM_TargetInfo span{
+    display: inline-block;
+    height: 17px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    vertical-align: bottom;
+    white-space: nowrap;
+    width: 110px;
+    word-wrap: break-word;
+}
+#IM_TargetInfo b{
+    display: inline-block;
+    font-size: 12px;
+    margin: 1px 5px 1px 15px;
+    width: 65px;
+}
+#IM_DialoBox,#IM_AboutBox{
+    background: none repeat scroll 0 0 #FFFFFF;
+    box-shadow: 0 0 5px 2px #CCCCCC;
+    left: 100px;
+    position: absolute;
+    top: 100px;
+    width: 310px;	
+	border:1px solid #ccc\9;
+	*border:1px solid #ccc;
+	vertical-align:baseline;
+	display:none;
+	z-index:100;
+}
+.IM_DialoClose{
+	margin:0;
+}
+.IM_DialoHead,.IM_AboutHead{
+	border-left: 10px solid #F87E69;
+    padding: 0 0 0 10px;
+    margin: 10px 0 0;
+	width:100px;
+}
+.IM_DialoHead h2{
+    font-size: 25px;
+    font-weight: bold;
+    height: 28px;
+}
+.IM_DialoHead h4{
+	font-size: 18px;
+    height: 25px;
+}
+#IM_DialoBox p{
+    color: #777777;
+	margin:0px;
+    padding: 0px 28px 12px;
+}
+#IM_DialoBox label{
+	display:block;
+	margin: 8px 0 0;
+}
+#IM_DialoBox input{
+	border: 0px solid #CCCCCC;
+	background:#e5f6f9;
+    color: #555555;
+    font-size: 22px;
+    height: 29px;
+	padding:2px;
+    letter-spacing: -1px;
+    width: 100%;
+	font-family: Leelawadee,"微软雅黑",sans-serif,Arial;
+}
+#IM_btn_SignIn{
+    background: none repeat scroll 0 0 #43B1FF;
+    border: 0 none;
+    color: #FFFFFF;
+    display: block;
+    float: right;
+    height: 26px;
+    margin: 0;
+	font-size:15px;
+	line-height:25px;
+    text-align: center;
+    text-decoration: none;
+    width: 80px;
+	font-family: Leelawadee,"微软雅黑",sans-serif,Arial;
+	cursor:pointer;
+}
+#IM_btn_SignIn:hover{
+	background:#39f;
+}
+#IM_Tutorial:hover{
+	cursor:pointer;
+	color:#39f;
+	text-decoration:underline;
+}
+#IM_About:hover{
+	text-decoration:underline;
+	color:#39f;
+	cursor:pointer;
+}
+.IM_AboutHead{
+	border-left: 10px solid #0c0;
+}
+.IM_DialoContent{
+	-moz-user-select: none;
+	display:block;
+	padding:12px;
+}
+.IM_DialoContent dl{
+	float:right;
+	color:#555;
+	font-size:12px;
+	padding:5px 0 0 0;
+}
+.IM_DialoContent dd{
+	margin:0 0 8px 5px;
+}
+.IM_DialoContent span{
+	display:inline-block;
+	width:45px;
+}
+.IM_DialoContent a{
+	color:#39f;
+	margin:0 0 0 5px;
+}
+.IM_DialoFooter{
+    color: #CCCCCC;
+    display: block;
+    font-size: 12px;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+}
