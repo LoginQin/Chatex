@@ -131,9 +131,9 @@ $(function(){
   var currlen = 0; //当前文字长度
   var LIMITLEN = 300;//发送长度上限
   var speed = C.animate ? 200 : 0;
-  var HOST = "http://127.0.0.1";
+  var HOST = "http://127.0.0.1"
   var PORT = 3000;
-  var HOSTPATH = HOST+":3000/";
+  var HOSTPATH = HOST+"/chat/WebIM/";
   var AccessGroup = {};//允许接收消息的群
   var WebIM = $("#WebIM");
   /*给目标对象添加事件*/
@@ -248,9 +248,9 @@ $(function(){
   var categoryAnimation = function (m, ml){
     m[0].onmouseover = function(){
       if(ml[0].style.display != "none"){
-       m[0].style.backgroundImage="url("+HOSTPATH+"images/slide_up.png)";
+       m[0].style.backgroundImage="url("+HOSTPATH+"/theme/blue/images/slide_up.png)";
      }else{
-       m[0].style.backgroundImage="url("+HOSTPATH+"images/slide_down.png)";
+       m[0].style.backgroundImage="url("+HOSTPATH+"/theme/blue/images/slide_down.png)";
      }
     };
     m[0].onmouseout = function(){
@@ -259,12 +259,12 @@ $(function(){
     m.click(function(){
       if(ml[0].style.display != "none"){
         ml.slideUp(speed, function(){
-          m[0].style.backgroundImage="url("+HOSTPATH+"images/slide_down.png)";
+          m[0].style.backgroundImage="url("+HOSTPATH+"/theme/blue/images/slide_down.png)";
 	
         });
       }else {
         ml.slideDown(speed, function(){
-          m[0].style.backgroundImage="url("+HOSTPATH+"images/slide_up.png)";
+          m[0].style.backgroundImage="url("+HOSTPATH+"/theme/blue/images/slide_up.png)";
           ScrollToView(ml);	
         });
       }
@@ -280,9 +280,9 @@ $(function(){
   var wu = $("#IM_WithU .IM_category"), 
       wl = $("#IM_WithU ul");
   categoryAnimation(wu, wl);
-  var gc = $("#IM_group_person .IM_category"),
-      gl = $("#IM_group_person ul");
-  //categoryAnimation(gc, gl);
+//  var gc = $("#IM_group_person .IM_category"),
+ //     gl = $("#IM_group_person ul");
+ // categoryAnimation(gc, gl);
 
   /*按钮切换页面*/
   var SettingBox = $("#IM_SettingBox"),
@@ -462,12 +462,12 @@ $(function(){
     }
     if(shownum > LIMITLEN) {
       BtnSend[0].style.background="#f00";
-      BtnSend[0].style.border="1px solid #000";
+    //  BtnSend[0].style.border="1px solid #000";
       BtnSend.html(shownum - LIMITLEN + "<em style='font-size:12px'> over</em>");
     }
     else {
       BtnSend[0].style.background="#39f";
-      BtnSend[0].style.border="1px solid #2194d0";
+    //  BtnSend[0].style.border="1px solid #2194d0";
     }
     currlen = shownum;
     delete shownum;
@@ -731,7 +731,52 @@ $(function(){
   });
   //匹配豆瓣
   ChatModule.addContentReplaceRule(/#douban/, function(data){
-  	return '<div style="" ><iframe id="runtime"  name="runtime" width="420" height="186" scrolling="no" frameborder="0" src="http://app.baidu.com/100112"></iframe></div>'
+  	return '<iframe id="runtime"  name="runtime" width="330" height="285" scrolling="no" frameborder="0" src="http://douban.fm/partner/uc"></iframe>';
+  });
+  
+  /**
+   * 添加虾米音乐
+   * ^-^非常感谢虾米提供的API
+   * 向虾米搜索音乐,找到数据后加入播放器播放, 默认播放第一条搜索结果,所以为了搜索精确
+   * 请使用 #音乐:歌曲 作者 
+   * 使搜索精确. 搜索支持虾米的模糊搜索和拼音搜索,比如 光辉岁月 -> ghsy
+   * 开启方式#music: | #music= | #音乐: | #音乐= | #虾米= | #虾米: 跟搜索内容#虾米 曲名 作者
+   */
+  ChatModule.addContentReplaceRule(/#(music|音乐|xiami|虾米)(=|:|\s)([\s\S]+)/ , function(data){
+	var value;
+	var mid = Math.round(Math.random()*1000000000000000);
+	if(data[3]){
+		value = encodeURI(data[3]);
+	}
+	if(!value || value.replace(/\s/g, '') == '') return;
+	$.ajax({
+ 	 	url:'http://www.xiami.com/app/nineteen/search/key/'+value+'/page/1',
+ 	 	data:'random=' + new Date().getTime() + '.js',
+ 	 	dataType: 'jsonp',
+  		success: function(data){
+			var mu = $('dd[music="xiami:'+mid+'"]');
+			if(data.total == 0 || data.total == '0' ){
+				mu.children('em').text('虾米无法找到:');
+				mu.children('em').css({fontStyle: 'normal', color: 'red'});
+				mu.append('<p style="color:#999; font-size:11px;">请检查搜索词是否正确，更精确搜索请使用：歌名 艺人</p>')
+				
+			}else{
+				mu.append('<br/><embed src="http://www.xiami.com/widget/7227819_' + data.results[0].song_id + '/singlePlayer.swf" type="application/x-shockwave-flash" width="257" height="33" style="margin:5px 0 0 0;" wmode="transparent"></embed>');
+				mu.children('em').text('请等待加载音乐:');
+				mu.children('em').css({color:'green', fontStyle:'normal'});
+				mu.children('span').text(decodeURI(data.results[0].song_name  + ' - ' 
+								+ data.results[0].artist_name).replace(/\+/g, ' '));
+				mu.children('span').css({color: '#FF5A0B'});
+				setTimeout(function(){
+					mu.children('em').text('点击播放:');
+				}, 2500);
+				
+			}
+			delete mu;
+  		}
+	});
+	return '<dd music="xiami:'+mid+'"><em style="color:#F1960A;font-size:11px;">\
+	正在搜索虾米音乐:</em><span style="font-size: 12px; margin: 0 0 0 5px;">' + data[3] + '</span></dd>';
   });
   
   /**
@@ -1190,9 +1235,9 @@ $(function(){
   var showTargetWin = function(t_id){
     if(!UserWin[t_id]) return;
     target_id = t_id;//当要显示当前窗口的时候,重新设置目标id
-    $('#IM_ChatBox .IM_WinBottom').hide();
-    $('.IM_PersonWin').hide();
-    UserWin[target_id].show();
+    $('#IM_ChatBox .IM_WinBottom').css('opacity', 0);
+    $('.IM_PersonWin').css({opacity:0, display:'block', position: 'absolute', top: 0, width: '380px', zIndex: 1});
+    UserWin[target_id].css({opacity:1, zIndex:1000});
 	$('dd[listid="'+target_id+'"]').addClass('IM_Li-chatwith');
     _MsgWin = $('div[winid="' + target_id + '"]');//将操作窗口改为当前窗口
   };
@@ -1464,7 +1509,7 @@ $(function(){
 		var name = $('#IM_SignInName').val().replace(' ', ''),
 		pw = $('#IM_SignInPw').val().replace(' ', '');
 		var shakeDialo = function(){
-			LoginDialo.animate({left:'30px'},160, function(){
+			LoginDialo.animate({left:'20px'},160, function(){
 			   	LoginDialo.animate({left:'130px'}, 320, function(){
 					LoginDialo.animate({left:'100px'}, 160, function(){
 						setTimeout(function(){$('#IM_SignInPw').val('');}, 300);
@@ -1547,8 +1592,22 @@ $(function(){
 		{name:'助手', msg:'*在群聊中如果对某人感兴趣,可以点击对方名字快速创建私聊~' , time:'',  footer:''},
 		{name:'助手', msg:'如果你不小心掉线了, 10分钟内再次登陆该网站还可以查看你没有收到的消息~当然需要打开浏览器Cookie功能,否则服务器不认识你啦' , time:'',  footer:''},
 		{name:'助手', msg:'如果你是Master, 你永远也不用担心掉线或者接收消息不到,你的消息是存在服务器上的哦.' , time:'',  footer:''},
+		{name:'助手', msg:'如果你想试验#号功能，而不打扰其他人，可以通过给自己发消息学习哦，熟悉了再跟他人使用No2Chat吧 ~^_^~' , time:'',  footer:''},
 		{name:'助手', msg:'好了, 祝你使用愉快! :)' , time:'',  footer:''}
 	];
+	/*About*/
+	$('#IM_About').click(function(event){
+		var ev = event || window.event;
+		ev.stopPropagation();//阻止冒泡
+		$('#IM_AboutBox').fadeIn(300);
+	});
+	$(document).click(function(){
+		$('#IM_AboutBox').fadeOut(300);		
+	});
+	$('#IM_AboutBox').click(function(){
+		return false;
+	});
+		 
 });
 	
 

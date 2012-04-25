@@ -8,13 +8,7 @@ var express = require('express')
   url = require('url'),
   fs = require('fs'); 
   
-//parseCookie = require('connect').utils.parseCookie,
-//MemoryStore = require('connect/lib/middleware/session/memory');
 var sio = require('socket.io'); 
-//    storeMemory = new MemoryStore({
-//		reapInterval: 60000 * 10
-//	});//session store
-
 var app = module.exports = express.createServer();
 
 //Express Configuration
@@ -25,10 +19,6 @@ app.configure(function(){
   // app.use(express.bodyParser());//默认上传目录在你的appdata/temp文件夹下
   app.use(express.bodyParser({uploadDir: './uploadtmp'}));//指定上传临时目录
   app.use(express.cookieParser());
-  //  app.use(express.session({
-  //		secret: 'wyq',
-  //		store:storeMemory 
-  //  }));
   app.use(express.methodOverride());
   app.use(app.router);
   app.use(express.static(__dirname + '/public'));
@@ -45,8 +35,6 @@ var io = sio.listen(app);
 
 // Routes
 app.get('/', routes.index);
-app.get('/user/:id', routes.user);
-app.post('/action', routes.action);
 app.get('/chat', function(req, res){
   //res.render('chat', {title: 'Chat-Room', layout: 'mylayout'});
   var realpath = __dirname + '/views/' + url.parse('no2chat.html').pathname;
