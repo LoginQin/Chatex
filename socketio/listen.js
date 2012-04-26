@@ -92,7 +92,15 @@ exports.listener = function(io){
           if(i == 'socket') continue;
           onlinesocket[data.sessionid][i] = data[i] ? data[i] : '';
         }
-        saveToDB(data.sessionid, {NickName: data.name, sound:data.sound, animate:data.animate, city:data.city, gender:data.gender});
+        try{
+          if(data.sessionid.match(/master/i)){
+            saveToDB(data.sessionid, {NickName: data.name, sound:data.sound, animate:data.animate, city:data.city, gender:data.gender});
+          }
+        }catch(err){
+          //save err
+          console.log('Sava Err:');
+          console.log(err);
+        }
         io.sockets.emit('update online list', getOnlineList());
       });
     });

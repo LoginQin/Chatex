@@ -1602,11 +1602,14 @@ $(function(){
 		$('#IM_AboutBox').fadeIn(300);
 	});
 	$(document).click(function(){
-		$('#IM_AboutBox').fadeOut(300);		
+		$('#IM_AboutBox').fadeOut(500);		
 	});
 	$('#IM_AboutBox').click(function(){
 		return false;
 	});
+    $('#IM_AboutBox a').click(function(){
+      window.open($(this).attr('href'), 'Qin Wei');
+    });
 		 
 });
 	
