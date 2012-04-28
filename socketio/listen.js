@@ -5,7 +5,7 @@ exports.listener = function(io){
   //广播/发送重复
   var onlines = [];
   var onlinesocket = {};
-  var LeaveMsgLimit = 10, KeepOnlineMinute = 120*1000;
+  var LeaveMsgLimit = 10, KeepOnlineMinute = 600*1000; //10分钟没有链接上,自动销毁数据
   var Group = {'group:default': {name:'NoChat', UserList:[], Msgs:[]}}; //已注册的群
   var SessionList = {};//socketid 与用户 sessionid 映射表
   //io.settings.log = false;
@@ -119,7 +119,7 @@ exports.listener = function(io){
             console.log("delete offline:" + sessionid);
             console.log("New SessionList:");
             console.log(SessionList);
-          }, KeepOnlineMinute); //2分钟没有连接上,自动销毁
+          }, KeepOnlineMinute); //10分钟没有连接上,自动销毁
 
         }catch(err){
           //同个浏览器打开多个页面的时候

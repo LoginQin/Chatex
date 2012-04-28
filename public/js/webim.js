@@ -1334,27 +1334,25 @@ $(function(){
 	});
 	/*拖拽*/
   var Dragable = function(trigger, jq_drag){
-	  var reTop, reLeft, canmove = false;
-	  trigger.live(
-		{mousedown: function(event){ 
-		   var ev = event || window.event;
-		   reLeft = ev.pageX - jq_drag[0].offsetLeft;
-		   reTop = ev.pageY - jq_drag[0].offsetTop;
-		   $(this).css({cursor:"move"});
-		   jq_drag.css({boxShadow: "1px 1px 3px 1px #43B1FF"});
-		   jq_drag.fadeTo(0, 0.8);
-		   canmove = true;
-		},
-		mousemove: function(event){
-		   var ev = event || window.event;
-		  if(canmove){ 
-		    jq_drag.css({left: ev.pageX - reLeft, top:ev.pageY-reTop});
-		  }
-		},
-		mouseup: function(event){
+    var LIMITLEFT = 0 - $('#WebIM').offset().left,
+        LIMITTOP = 0 - $('#WebIM').offset().top,
+        LIMITRIGHT = 220 , LIMITBOTTOM = 45;
+    var final_x, final_y, mouse;
+    var getMousePasition = function(ev){
+      var x, y;
+      if(document.selection){ //IE
+        x = ev.clientX; 
+        y = ev.clientY;
+      }else {//Chrome FireFox
+        x = ev.pageX;
+        y = ev.pageY;
+      }
+      return {'X' : x, 'Y' : y};
+    }
+    var DragUp = function(event){
 		   var ev = event || window.event;
 		   if(canmove){ 
-		   	 jq_drag.css({left: ev.pageX - reLeft, top:ev.pageY-reTop });
+		   	 jq_drag.css({left: final_x, top: final_y });
 		   	 canmove = false;
 		     $(this).css({cursor:"default"});
 		     jq_drag.css({boxShadow: "1px 1px 5px 1px #999"});
@@ -1362,7 +1360,37 @@ $(function(){
             || window.getSelection && window.getSelection().removeAllRanges();
 			jq_drag.fadeTo(0, 1);
 		   }
+		};
+    var DragMove = function(event){
+		var ev = event || window.event;
+        mouse = getMousePasition(ev);
+		  if(canmove){ 
+            final_x = mouse.X - reLeft;
+            final_y = mouse.Y - reTop;
+            final_x = final_x > LIMITLEFT ? final_x : LIMITLEFT;
+            final_x = final_x > LIMITRIGHT ? LIMITRIGHT : final_x;
+            final_y = final_y > LIMITTOP ? final_y : LIMITTOP;
+            final_y = final_y > LIMITBOTTOM ? LIMITBOTTOM : final_y;
+		    jq_drag.css({left: final_x, top: final_y });
+		  }
+	};
+
+    addEvent(document, 'mousemove', DragMove, false);//监听document,确保在任何地方都有效,因为鼠标太快会脱离选定区域
+    addEvent(document, 'mouseup', DragUp, false);
+	  var reTop, reLeft, canmove = false;
+	  trigger.live(
+		{mousedown: function(event){ 
+		   var ev = event || window.event;
+           mouse = getMousePasition(ev);
+		   reLeft = mouse.X - jq_drag[0].offsetLeft;
+		   reTop = mouse.Y - jq_drag[0].offsetTop ;
+		   $(this).css({cursor:"move"});
+		   jq_drag.css({boxShadow: "1px 1px 3px 1px #43B1FF"});
+		   jq_drag.fadeTo(0, 0.8);
+		   canmove = true;
 		}
+		//mousemove: DragMove,
+		//mouseup: DragUp
 	  });
 	};
 	Dragable($(".IM_ChattingTitle"), ChatBox);
@@ -1434,7 +1462,7 @@ $(function(){
 			newtime = d.getTime();
 			if(newtime - hovertime > 500 ) {
 			//	TargetInfo.children("dl").remove();
-				TargetInfo.fadeTo(speed, 0.73);
+				TargetInfo.fadeTo(speed, 0.9);
 				getTargetUserInfoById(hover_id);
 				clearIntervals(ids);
 			}; //光标停留150毫秒标示需要显示信息
@@ -1601,9 +1629,9 @@ $(function(){
 		ev.stopPropagation();//阻止冒泡
 		$('#IM_AboutBox').fadeIn(300);
 	});
-	$(document).click(function(){
+	addEvent(document, 'click', function(){
 		$('#IM_AboutBox').fadeOut(500);		
-	});
+	}, false);
 	$('#IM_AboutBox').click(function(){
 		return false;
 	});
@@ -1612,6 +1640,8 @@ $(function(){
     });
 		 
 });
+
+
 	
 
 		  })(jQuery);

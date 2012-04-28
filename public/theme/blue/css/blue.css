@@ -13,6 +13,7 @@
 	cursor:default;
 	font-family: Leelawadee,"微软雅黑", sans-serif, Arial;
 	z-index: 500px;
+    text-align:left;
 }
 #WebIM span{
 	word-wrap: break-word;
@@ -457,7 +458,7 @@ span#IM_nickname{
 	float:right;
 	padding:0px;
 }
-.IM_set{
+input.IM_set{
 	border:hidden;
 	border-bottom:1px solid #999;
 	width:123px;
@@ -541,6 +542,8 @@ div.IM_btn_save, div.IM_btn_back{
     overflow: hidden;
     width: 100px;
 	-moz-user-select: none;
+	-khtml-user-select: none;
+	user-select: none;
 	cursor:default;
 }
 .IM_ChatList h3 {
@@ -755,6 +758,8 @@ textarea.IM_UserTextarea{
 }
 .IM_UserWinclose,.IM_DialoClose{
 	-moz-user-select: none;
+	-khtml-user-select: none;
+	user-select: none;
 	height:20px;
 	text-align: center;
     width: 30px;
@@ -1120,6 +1125,8 @@ a.IM_btn_Send{
 }
 .IM_DialoContent{
 	-moz-user-select: none;
+	-khtml-user-select: none;
+	user-select: none;
 	display:block;
 	padding:12px;
 }
@@ -1128,6 +1135,7 @@ a.IM_btn_Send{
 	color:#555;
 	font-size:12px;
 	padding:5px 0 0 0;
+	margin:0;
 }
 .IM_DialoContent dd{
 	margin:0 0 8px 5px;
