@@ -37,6 +37,7 @@
 #IM_MainPanel{
 	display:none;
 	_position:absolute;
+	_top:300px;
 	_right:700px;
 }
 .IM_MinSizeWin,.IM_UserWinclose,.IM_DialoClose,.IM_MinBar em,#IM_status,.IM_listitem span,#IM_online{
@@ -435,9 +436,9 @@ span#IM_nickname{
 }
 .IM_content_setting{
 	height:353px;
-	_height:325px;
 	*overflow-y:auto;
 	*height:345px;
+	_height:325px;
 }
 .IM_setitem{
 	font-size:18px;
@@ -469,6 +470,9 @@ input.IM_set{
 	font-family:"微软雅黑", sans-serif, Arial;
 }
 .IM_set_option{
+	*width:90px;
+	*padding:0px;
+	*margin-right:-10px;
 	width:105px;
 	height:38px;
 	float:right;
@@ -692,6 +696,13 @@ textarea.IM_UserTextarea{
 	box-shadow:0 0 0 0 ;
 	background:#fff;
 	padding: 2px;
+}
+.IM_SendPrompt{
+    color: #CCCCCC;
+    font-size: 16px;
+    left: 110px;
+    position: absolute;
+    top: 340px;
 }
 
 .IM_SendTypeOption{
@@ -1060,7 +1071,7 @@ a.IM_btn_Send{
 	border-left: 10px solid #F87E69;
     padding: 0 0 0 10px;
     margin: 10px 0 0;
-	width:100px;
+	width:200px;
 }
 .IM_DialoHead h2{
     font-size: 25px;
@@ -1128,7 +1139,11 @@ a.IM_btn_Send{
 	-khtml-user-select: none;
 	user-select: none;
 	display:block;
-	padding:12px;
+	min-height:100px;
+	padding:12px 5px;
+}
+.IM_DialoContent img{
+	float:left;
 }
 .IM_DialoContent dl{
 	float:right;
@@ -1136,13 +1151,14 @@ a.IM_btn_Send{
 	font-size:12px;
 	padding:5px 0 0 0;
 	margin:0;
+	display:inline;
 }
 .IM_DialoContent dd{
 	margin:0 0 8px 5px;
 }
 .IM_DialoContent span{
 	display:inline-block;
-	width:45px;
+	width:48px;
 }
 .IM_DialoContent a{
 	color:#39f;

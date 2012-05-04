@@ -133,7 +133,7 @@ $(function(){
   var speed = C.animate ? 200 : 0;
   var HOST = "http://127.0.0.1"
   var PORT = 3000;
-  var HOSTPATH = HOST+"/chat/WebIM/";
+  var HOSTPATH = HOST+":"+PORT+'/';
   var AccessGroup = {};//允许接收消息的群
   var WebIM = $("#WebIM");
   /*给目标对象添加事件*/
@@ -466,7 +466,7 @@ $(function(){
       BtnSend.html(shownum - LIMITLEN + "<em style='font-size:12px'> over</em>");
     }
     else {
-      BtnSend[0].style.background="#39f";
+      BtnSend[0].style.background="#43B1FF";
     //  BtnSend[0].style.border="1px solid #2194d0";
     }
     currlen = shownum;
@@ -592,14 +592,35 @@ $(function(){
     t = BtnSend.html();
     BtnSend.text("Send");
   } ,function(){ 
-    SOption.animate({opacity : 0},0);
+    SOption.animate({opacity : 0.5},0);
     BtnSend.html(t);
   });  
   SOption.hover(function(){
     SOption.animate({opacity:1},0);
   }, function(){
-    SOption.animate({opacity:0},0);
+    SOption.animate({opacity:0.5},0);
   });
+  /*Send Prompt*/
+  var SendPrompt = $('<span class="IM_SendPrompt">在这里输入信息...</span>');
+  $('.IM_btn_Send').before(SendPrompt);
+  var showSendPrompt = function(){
+	 SendPrompt.show();
+  };
+  var hideSendPrompt = function(){
+	SendPrompt.fadeOut(speed);
+  };
+  SendPrompt.click(function(ev){ //这里的Click事件JQuery封装了统一的接口，可以不用window.event
+	ev ? ev.stopPropagation() : window.event.cancelBubble = true;
+	Tarea.focus();
+  });
+  addEvent(Tarea[0], 'focus', function(){
+  	hideSendPrompt();
+  }, false);
+
+  addEvent(Tarea[0], 'blur', function(){
+     if(currlen != 0) return;
+     showSendPrompt();
+  }, false);
 
   /*字体大小选择*/
   var fOption = $("#IM_ChatBox .IM_TB-fontOption"),
@@ -761,7 +782,7 @@ $(function(){
 				mu.append('<p style="color:#999; font-size:11px;">请检查搜索词是否正确，更精确搜索请使用：歌名 艺人</p>')
 				
 			}else{
-				mu.append('<br/><embed src="http://www.xiami.com/widget/7227819_' + data.results[0].song_id + '/singlePlayer.swf" type="application/x-shockwave-flash" width="257" height="33" style="margin:5px 0 0 0;" wmode="transparent"></embed>');
+				mu.append('<br/><embed src="http://www.xiami.com/widget/0_' + data.results[0].song_id + '/singlePlayer.swf" type="application/x-shockwave-flash" width="257" height="33" style="margin:5px 0 0 0;" wmode="transparent" ></embed>');
 				mu.children('em').text('请等待加载音乐:');
 				mu.children('em').css({color:'green', fontStyle:'normal'});
 				mu.children('span').text(decodeURI(data.results[0].song_name  + ' - ' 
@@ -869,10 +890,13 @@ $(function(){
 			}
 		);//send public msg
 	  }else {
-		sendPrivateMsg(target_id, {'name': C.name, 'time': stime, 'msg': msg, 'footer': ''}, 
+		//var start_time = new Date().getTime();//FOR TEST
+		var start_time = '';
+		sendPrivateMsg(target_id, {'name': C.name, 'time': stime, 'msg': msg, 'footer': start_time}, 
 			function(ok){
 				if(ok){
 		    	    sendSuccess();
+				//	alert(new Date().getTime() - start_time);//FOR TEST
 				}else{
 					sendFail();
 				}
@@ -1074,8 +1098,12 @@ $(function(){
 		}else{
 			a_name = $('<a class="IM_MsgName-Get" tid="'+_from_id+'" href="javascript:void(0)" />').text(data.name+' ');
 		}
+		//FOR TEST TIME
+	//	var _gettime = new Date();
+	//	gettime = _gettime.getTime() - parseInt(data.footer);
+	var gettime = '';
 		span = $('<span />').text(data.time),
-        ddf = $('<dd class="IM_Msg_footer-Get" />').append('<em>'+data.footer+'</em>'), span2 = $('<span />');
+        ddf = $('<dd class="IM_Msg_footer-Get" />').append('<em>'+ gettime +'</em>'), span2 = $('<span />');
 		
 	var msg = ChatModule.HandleMsg(data.msg);
 	var span2 = $('<span />');
@@ -1334,8 +1362,8 @@ $(function(){
 	});
 	/*拖拽*/
   var Dragable = function(trigger, jq_drag){
-    var LIMITLEFT = 0 - $('#WebIM').offset().left,
-        LIMITTOP = 0 - $('#WebIM').offset().top,
+    var LIMITLEFT = 0 - $('#WebIM')[0].offsetLeft, //jquery offset() will add scrollTop
+        LIMITTOP = 0 - $('#WebIM')[0].offsetTop,
         LIMITRIGHT = 220 , LIMITBOTTOM = 45;
     var final_x, final_y, mouse;
     var getMousePasition = function(ev){
@@ -1354,7 +1382,6 @@ $(function(){
 		   if(canmove){ 
 		   	 jq_drag.css({left: final_x, top: final_y });
 		   	 canmove = false;
-		     $(this).css({cursor:"default"});
 		     jq_drag.css({boxShadow: "1px 1px 5px 1px #999"});
 			 document.selection && document.selection.empty && ( document.selection.empty(), 1)
             || window.getSelection && window.getSelection().removeAllRanges();
@@ -1384,8 +1411,8 @@ $(function(){
            mouse = getMousePasition(ev);
 		   reLeft = mouse.X - jq_drag[0].offsetLeft;
 		   reTop = mouse.Y - jq_drag[0].offsetTop ;
-		   $(this).css({cursor:"move"});
 		   jq_drag.css({boxShadow: "1px 1px 3px 1px #43B1FF"});
+           $(this).css('cursor', 'move');
 		   jq_drag.fadeTo(0, 0.8);
 		   canmove = true;
 		}
@@ -1624,9 +1651,8 @@ $(function(){
 		{name:'助手', msg:'好了, 祝你使用愉快! :)' , time:'',  footer:''}
 	];
 	/*About*/
-	$('#IM_About').click(function(event){
-		var ev = event || window.event;
-		ev.stopPropagation();//阻止冒泡
+	$('#IM_About').click(function(ev){ 
+        ev ? ev.stopPropagation() : window.event.cancelBubble = true;
 		$('#IM_AboutBox').fadeIn(300);
 	});
 	addEvent(document, 'click', function(){
