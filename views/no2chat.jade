@@ -1,0 +1,198 @@
+!!! transitional
+html(xmlns='http://www.w3.org/1999/xhtml')
+  head
+    meta(http-equiv='Content-Type', content='text/html; charset=utf-8')
+    title WebIM
+    script(type='text/javascript', src='js/jquery-1.7.2.min.js')
+    script(type='text/javascript', src='js/socket.io.min.js')
+    link#IM_css(rel='stylesheet', type='text/css', href='theme/blue/css/blue.css')
+    script(type='text/javascript', src='http://int.dpool.sina.com.cn/iplookup/iplookup.php?format=js')
+    script#webimjs(type='text/javascript', src='js/webim.js')
+    script(type='text/javascript', src='js/prettify.js')
+    link(type='text/css', rel='stylesheet', href='theme/blue/css/prettify.css')
+  body
+    div(style='background: #f4f4f4; width: 1248px; height: 1000px;')
+    #WebIM
+      //
+         聊天窗口 
+      #IM_MiniBox(title='Chatting With Online People')
+        #IM_NoticeIMG.IM_IMG-offline ;-(
+        b 聊天
+        span Connecting
+      #IM_SysMsgBar
+        span System Message
+      #IM_ChatBox
+        .IM_ChatList(onselectstart='return false')
+          h3 Chat
+          dl.IM_Chatting-List  
+        .IM_UserWindow
+          .IM_PersonWin(sid='{#sid}')
+            .IM_MsgWinHeader(onselectstart='return false')
+              .IM_ChattingTitle
+                span(class="IM_TargetState {#groupstate}", title='User State') {#name}
+              .IM_UserWinclose(onselectstart='return false', closeid='{#sid}', title='关闭') ×
+              .IM_MinSizeWin(title='最小化')
+                | _
+                //if IE 7
+            .IM_MsgWindow(winid='{#sid}')
+              //
+                 消息体 
+          //
+             per win end! 
+          .IM_WinBottom
+          ul.IM_TB-fontList
+            span Font Size
+            li(value='12') 12px
+            li(value='13') 13px
+            li(value='14') 14px
+            li(value='15') 15px
+            li(value='16') 16px
+            li(value='17') 17px
+          .IM_ToolBar
+            a.IM_TB-fontOption(href='javascript:void(0)') A
+            .IM_SendTypeOption
+              h3 SEND TYPE:
+              span.IM_unactive(value='Enter') Enter
+              span.IM_active(value='Ctrl_Enter') Ctrl+Enter
+          .IM_UserInputBox
+            textarea.IM_UserTextarea(name='_UserText')
+          a.IM_btn_Send(title='Send Message', href='javascript:void(0)') Send
+      //
+        Group聊天窗口end
+      //
+        Group Chatting Box
+      //
+         主窗口 
+      #IM_MainPanel
+        #IM_TargetInfo
+        #IM_DialoBox
+          .IM_DialoClose ×
+          .IM_DialoHead
+            h2 Master
+            h4 Login
+          p
+            label
+              | 用户名
+              br
+              input#IM_SignInName.IM_DialoInput(size='20px', type='text')
+            label
+              | 密码
+              br
+              input#IM_SignInPw.IM_DialoInput(size='20px', type='password')
+          a#IM_btn_SignIn(type='button') 登 陆
+        #IM_AboutBox(onselectstart='return false')
+          .IM_AboutHead
+            h2 About
+            h4 Author
+          .IM_DialoContent
+            img(src='http://www.gravatar.com/avatar/b69725e32e5d2d134d8aca7b8f63244e?s=100', width='100', height='100')
+            dl
+              dd
+                span 作 者:
+                | 覃 炜
+              dd
+                span E-Mail:
+                | qinwei081@gmail.com
+              dd
+                span 微 博:
+                a(href='http://weibo.com/chinesetiger', target='_blank') Chinese Tiger
+              dd
+                span GitHub:
+                a(href='https://github.com/LoginQin', target='_blank') LoginQin
+          .IM_DialoFooter Chinese Tiger
+        #IM_MainBox
+          .IM_MinBar(title='最小化')
+            em Min
+          .IM_head
+            span#IM_nickname Your Name
+            span#IM_status.IM_online Online
+          //
+             个人内容 
+          .IM_content
+            #IM_Master
+              h3.IM_category Master
+              a.IM_MasterSignIN(href='javascript:void(0)') 登 录
+              a.IM_MasterSignOut(href='javascript:void(0)') 退 出
+              ul
+                li.IM_listitem.IM_MasterOffline(sid='master:12345')
+                  span 中国老虎
+                li.IM_listitem.IM_MasterOnline(sid='master:123456')
+                  span HKLLO
+            #IM_WithU
+              //
+                在线列表 h3.IM_category ul li.IM_listitem IMnear IM_backlist
+              h3.IM_category 9000-WithU
+              ul
+          .IM_footer
+            #IM_group
+              span
+              | GROUP
+            .IM_setting
+              span
+              | SETTING
+        //
+           组别页面 
+        #IM_GroupBox
+          .IM_MinBar(title='Minimize The Window')
+            em Min
+          .IM_head
+            span Group
+          .IM_content
+            #IM_group_default
+              h3.IM_category Default
+              ul
+                li.IM_listitem(sid='group:default')
+                  span NoChat
+          .IM_footer
+            .IM_home
+              span
+              | HOME
+            .IM_setting
+              span
+              | SETTING
+        //
+           组别页面 end! 
+        //
+           设置页面 
+        #IM_SettingBox
+          .IM_MinBar(title='Minimize The Window')
+            em Min
+          .IM_head.IM_setting_head
+            span SETTING
+          .IM_content_setting
+            ul
+              li.IM_setitem
+                span Name
+                input#IM_setname.IM_set(type='text')
+              li.IM_setitem
+                span Gender
+                #IM_OP_Gender.IM_set_option
+                  span.IM_active Mr
+                  span.IM_unactive Miss
+              li.IM_setitem
+                span City
+                input#IM_setcity.IM_set(type='text')
+              li.IM_setitem
+                span Sound
+                #IM_OP_Sound.IM_set_option
+                  span.IM_active ON
+                  span.IM_unactive OFF
+              li.IM_setitem
+                span Animations
+                #IM_OP_Animation.IM_set_option
+                  span.IM_active ON
+                  span.IM_unactive OFF
+              li.IM_setitem
+                span#IM_Tutorial Tutorial
+              li.IM_setitem
+                span#IM_About About
+          .IM_footer
+            .IM_btn_save
+              span
+            .IM_btn_back
+              span
+        //
+           设置页面 end！
+      //
+        MainPanel
+  span.IM_IE7hack _

@@ -41,6 +41,8 @@ app.get('/chat', function(req, res){
   var txt = fs.readFileSync(realpath);
   res.end(txt);
 });
+app.get('/remote-chat', routes.chat);
+
 function html_encode(str){   
   var s = "";   
   if (str.length == 0){ return "";}   

@@ -1,0 +1,9 @@
+script(type="text/javascript", src='js/NoChat.js')
+script(type="text/javascript")
+  var im  = new NoChat();
+  im.loadTheme('blue');
+  im.loadJQ('jquery-1.7.2.min.js');
+  im.addContentReplaceRule(/red/, function(data){
+      return '<p style="color:red">' + data[0] + '</p>';
+   });
+  im.show();
