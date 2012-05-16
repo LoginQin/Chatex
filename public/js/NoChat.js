@@ -1,5 +1,5 @@
 function NoChat(){
-  var HOSTPATH = "http://127.0.0.1:3000/";
+  var HOSTPATH = "http://127.0.0.1:4000/";
   //by html 2 js tool
   var NewLine = '\n';
   var WebIM = '';
@@ -191,7 +191,7 @@ function NoChat(){
       loadJS(HOSTPATH + "js/socket.io.min.js");
       loadJS(HOSTPATH + "js/prettify.js");
       // IF OFFLINE, CREATE THE IP INFO BY YOURSELF
-      //window.remote_ip_info = {start:'127.0.0.1', country:'Test', city:'Test', isp:'Test', province: 'Test'};
+      window.remote_ip_info = {start:'127.0.0.1', country:'Test', city:'Test', isp:'Test', province: 'Test'};
       var loadCoreLib = function(){
         var timeid = setInterval(function(){
           if(typeof remote_ip_info != "undefined" && typeof $ != "undefined" && typeof io != "undefined" ){

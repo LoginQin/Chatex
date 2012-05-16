@@ -800,37 +800,6 @@ $(function(){
 	正在搜索虾米音乐:</em><span style="font-size: 12px; margin: 0 0 0 5px;">' + data[3] + '</span></dd>';
   });
   
-  /**
-   * 有道实时翻译
-   * 由于谷歌的翻译已经收费,转而使用有道翻译
-   * 有道的Api限制1000次/小时请求
-   * 而发送一条消息发送端和接收端都需要查询
-   * 所以实际上这里被限制为每小时发送500条翻译.
-   * */
-  ChatModule.addContentReplaceRule(/(#yd|#翻译|#english|#en|#chinese|#cn)\s([\s\S]+)/, function(data){	
-	var msg = data[2];
-    var query = encodeURI("keyfrom=chinesetiger&key=799841294&type=data&doctype=jsonp&callback=show&version=1.1&q=" + msg);
-  //	var query = encodeURI('oncomplete=mycallback&appId=A4D660A48A6A97CCA791C34935E4C02BBB1BEC1C&from=zh-cn&to=en&text='+msg);
-	var tid = Math.round(Math.random()*100000000000000);
-	$.ajax({
-   	type: "GET",
-  	url: "http://fanyi.youdao.com/openapi.do",
-   // url: 'http://api.microsofttranslator.com/V2/Ajax.svc/Translate' ,
-	data: query,
-  	dataType: "jsonp",
-  	success: function(msg){
-		$('dd[yd="youdao:'+tid+'"]').text(msg.translation); //获取翻译信息后再替换
-	}
-	});
-	/*for bing api
-	window.mycallback = function(data){
-		$('dd[yd="youdao:'+tid+'"]').text(data); //获取翻译信息后再替换
-	}
-	*/
-	return '<dd yd="youdao:'+tid+'">' + html_encode(data[2])+ '</dd>'; //现将数据返回
-	
-  
-  });
 
 
   /*发信添加至窗口界面*/
