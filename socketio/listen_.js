@@ -1,18 +1,5 @@
 exports.listener = function(io){
   redis = require('redis'); //redis数据库操作;
-  //FOR Cloud Foundry
-  if(process.env.VCAP_SERVICES){
-    var env = JSON.parse(process.env.VCAP_SERVICES);
-    var redis_conf = env['redis-2.2'][0]['credentials'];
-    console.log(redis);
-  }else{
-    var redis_conf = {
-      host: 'tetra.redistogo.com'
-        , port: 9709
-        , password: 'c8ecb49761ad2ae9a404c0d7798cc83c'
-    }
-  }
-
   //
   //Socket事件监听，必须放在app.js中监听，放在路由处理中会
   //广播/发送重复
@@ -82,11 +69,11 @@ exports.listener = function(io){
 
     //保存到Redis数据库
     var saveToDB = function(key, obj, fn){
-      var redisclient = redis.createClient(redis_conf.port, redis_conf.host);
+      var redisclient = redis.createClient();
       redisclient.on('error',function(err){ //监听错误信息
         console.log('Error' + err);
       });
-      redisclient.auth(redis_conf.password, function(err){ //如果有验证,要加入验证
+      redisclient.auth(12345, function(err){ //如果有验证,要加入验证
         if(err){
           console.log("Auth Error:"+ err);
         }
@@ -99,21 +86,23 @@ exports.listener = function(io){
 
     }
     socket.on('save data', function(data, fn){
-      for(var i in ClientSetting){
-        if(i == 'socket') continue;
-        onlinesocket[data.sessionid][i] = data[i] ? data[i] : '';
-      }
-      try{
-        if(data.sessionid.match(/master/i)){
-          saveToDB(data.sessionid, {NickName: data.name, sound:data.sound, animate:data.animate, city:data.city, gender:data.gender});
+      socket.set('nickname',data.name,function(){
+        fn(true);
+        for(var i in ClientSetting){
+          if(i == 'socket') continue;
+          onlinesocket[data.sessionid][i] = data[i] ? data[i] : '';
         }
-      }catch(err){
-        //save err
-        console.log('Sava Err:');
-        console.log(err);
-      }
-      io.sockets.emit('update online list', getOnlineList());
-      fn(true);
+        try{
+          if(data.sessionid.match(/master/i)){
+            saveToDB(data.sessionid, {NickName: data.name, sound:data.sound, animate:data.animate, city:data.city, gender:data.gender});
+          }
+        }catch(err){
+          //save err
+          console.log('Sava Err:');
+          console.log(err);
+        }
+        io.sockets.emit('update online list', getOnlineList());
+      });
     });
     socket.on('disconnect', function(){
       var sessionid = SessionList[socket.id];
@@ -141,9 +130,15 @@ exports.listener = function(io){
     io.sockets.emit('update online list', getOnlineList());
     });
 
+    var getMasterList = function(callback){
+      var rclient = redis.createClient();
+      rclient.sort('Masters', 'get', 'nickname:*', function(err, replay){
+      });
+
+    };
     var getMasterListFromDB = function(fn){
-      var redisclient = redis.createClient(redis_conf.port, redis_conf.host);
-      redisclient.auth(redis_conf.password, function(err, reply){
+      var redisclient = redis.createClient();
+      redisclient.auth(12345, function(err, reply){
         redisclient.sort('master:list', 'get', 'master:*->masterid','get','master:*->nickname','get', 'master:*->online', function(err, reply){
           var result = [];
           for(var i = 0; i < reply.length; ){
@@ -172,7 +167,7 @@ exports.listener = function(io){
       /*
          callback([{masterid:'master:12345', nickname:'中国老虎', online:false },
          { masterid:'master:123456', nickname:'cc', online:false}]);//返回master列表
-       */
+         */
 
       for(var olderid in SessionList){
         if(SessionList[olderid] == client.sessionid){ //新的链接会产生新socketid,要重新映射    
@@ -303,11 +298,11 @@ exports.listener = function(io){
 
     socket.on('Master Sign In', function(data, fn){
       var sessionid = SessionList[socket.id]; //找到当前匹配的对话
-      var redisclient = redis.createClient(redis_conf.port, redis_conf.host);
+      var redisclient = redis.createClient();
       redisclient.on('error',function(err){ //监听错误信息
         console.log('Error' + err);
       });
-      redisclient.auth(redis_conf.password, function(err){ //如果有验证,要加入验证
+      redisclient.auth(12345, function(err){ //如果有验证,要加入验证
         if(err){
           console.log("Auth Error:"+ err);
         }

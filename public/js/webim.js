@@ -131,8 +131,8 @@ $(function(){
   var currlen = 0; //当前文字长度
   var LIMITLEN = 300;//发送长度上限
   var speed = C.animate ? 200 : 0;
-  var HOST = "http://127.0.0.1"
-  var PORT = 3000;
+  var HOST = "http://chatex.jit.su"
+  var PORT = 80;
   var HOSTPATH = HOST+":"+PORT+'/';
   var AccessGroup = {};//允许接收消息的群
   var WebIM = $("#WebIM");

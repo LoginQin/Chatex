@@ -56,14 +56,15 @@ function html_encode(str){
   return s;   
 } 
 var util = require('util');
+/*
 var mem = process.memoryUsage();
 setInterval(function(){
   mem = process.memoryUsage();
   console.log("MEM:" + util.inspect(mem));
   console.log("RSS:" + (mem.rss/(1024*1024)));
 }, 60000);
-
+*/
 var socket_listener = require('./socketio/listen').listener;
 socket_listener(io);//用注入方式把io注给外部处理,达到分离
-app.listen(3000);
-console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
+app.listen(80);
+//console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
