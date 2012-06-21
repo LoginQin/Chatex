@@ -66,5 +66,5 @@ setInterval(function(){
 */
 var socket_listener = require('./socketio/listen').listener;
 socket_listener(io);//用注入方式把io注给外部处理,达到分离
-app.listen(80);
+app.listen(3000);
 //console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);

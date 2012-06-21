@@ -7,175 +7,359 @@
     <script type="text/javascript" src="js/socket.io.min.js"></script>
     <link id="IM_css" rel="stylesheet" type="text/css" href="theme/blue/css/blue.min.css" />
     <script type="text/javascript" src="http://int.dpool.sina.com.cn/iplookup/iplookup.php?format=js"></script>
-	<script type="text/javascript"  id="webimjs" src="js/webim.js"></script>
+    <script type="text/javascript"  id="webimjs" src="js/webim.min.js"></script>
     <script type="text/javascript" src="js/prettify.js"></script>
     <link type="text/css" rel="stylesheet" href="theme/blue/css/prettify.css"/>
+    <style type="text/css" >
+      body{
+        background:#f1f1f1;
+        font-family: Segoe UI,Tahoma,Arial,Verdana,sans-serif;
+      }
+      #_background{
+        background:#fff;
+        box-shadow: 2px 2px 10px 2px #CCCCCC;
+        height: auto;
+        margin: 0 auto;
+        min-width: 1000px;
+        padding: 8px;
+        width: 70%;
+      }
+      #_background h1{
+        font-weight: 800;
+        margin: 20px 14px 0 20px;
+        color: #39f;
+        font-size: 40px;
+      }
+      #_background h3{
+        color: #ccc;
+      }
+      #_background h2{
+        margin:30px 0 0 0 ;
+        color:#f09609;
+      }
+      #content h4{
+        color:#666;
+        margin-top:15px;
+      }
+      #content{
+        padding:15px;
+      }
+      #aboutex{
+        display:block;
+        position:relative;
+
+      }
+      .chatboximg{
+        text-align:center;
+        padding:10px;
+      }
+      .list{
+        padding:10px;
+        margin-left:30px;
+        float:left;
+        width:300px;
+      }
+      #_background a{
+        color:#555;
+        text-decoration:none;
+      }
+      #_background a:hover{
+        text-decoration:underline;
+      }
+      .list a{
+        display:list-item;
+        padding:5px;
+      }
+      .more{
+        color:#8cbf26;
+      }
+      .code{
+        display:block;
+        border:1px dashed #CCC;
+        padding:5px;
+        margin:5px;
+      }
+      #footer{
+        margin-top:200px;
+        text-align:center;
+      }
+
+
+    </style>
   </head>
 
-  <body>
- <div style="background:#f4f4f4; width:1248px; height:1000px"></div> 
+  <body onload="prettyPrint()">
+    <div id="_background" >
+
+      <h1>
+        No.Chat - WebIM  
+      </h1>
+      <div id="content">
+        <h4>
+          &nbsp;&nbsp; NoChat（我暂时还没想好名字;)）,
+          目标是构建高性能，可扩展的WebIM系统，使用Nodejs + Socket.IO +
+          Redis构建，当前是Github上发布的版本。  
+        </h4>
+        <div class="chatboximg" > 
+          <img src="images/chatbox.jpg" />
+          <img src="images/mainbox.jpg" />
+
+        </div>
+        <h2>
+          关于聊天扩展
+        </h2>
+
+        <div id="aboutex">
+          <h4 style="margin-top:15px;">
+            &nbsp;&nbsp;&nbsp;NoChat可以利用第三方API很方便的扩展功能，正如您看到和未看到的：
+          </h4>
+          <div class="list" >
+            <a href="#prettycode">代码高亮（Google Pretty Code）</a>
+            <a href="#xiami">实时搜索加入音乐（虾米音乐）</a>
+            <a href="#douban">UC豆瓣音乐台</a>
+            <a href="#youdao">中英双语实时翻译(有道翻译)</a>
+            <em class="more">您还可以扩展更多...</em>
+          </div>
+          <img  src="images/chatbox-ex.jpg" />
+
+        </div>
+
+        <h2>
+          聊天代码高亮 <a name="prettifycode"></a>
+        </h2>
+
+        <h4> &nbsp;&nbsp;&nbsp;聊天内容启用代码高亮，通过 # + 代码类型 + 空白 开启，像#js,
+          #html, #c++, #java, 您也可以笼统的使用#code，例如在聊天中这样输入下面这段代码：</h4>
+
+        <div class="code">
+          #js
+          <br/>
+          var func = function(a) = {<br/>
+          &nbsp;&nbsp;&nbsp;&nbsp;return &nbsp;a + 5;<br/>
+          };
+        </div>
+        <h4>&nbsp;&nbsp;&nbsp;系统会调用扩展的Google代码高亮模块，高亮代码显示给双方，这对开发者之间交流很有用哦</h4>
+        <div class="code">
+          <code class="prettyprint">
+            #js<br/>
+            var func = function(a){<br/>
+            &nbsp;&nbsp;&nbsp;&nbsp;return a + 5;<br/>
+            }
+          </code>
+        </div>
+
+        <h2> 实时插入虾米音乐<a name="xiami"></a></h2>
+        <h4>&nbsp;&nbsp;&nbsp;您是否想介绍的一首喜欢的歌给对方？通过虾米音乐API，可以很方便分享喜欢的音乐给对方;)， 通过下面的格式开启实时搜索并嵌入音乐</h4>
+        <h4>&nbsp;#音乐  &nbsp; #music  &nbsp; #xiami</h4>
+        <em>&nbsp;&nbsp;&nbsp;除了空白，你也可以用“=”或“：”， 如#music=海阔天空</em>
+        <h4>&nbsp;&nbsp;&nbsp;当然“海阔天空”有Beyond版和信乐团版，那么你应该这样输入：启用命令 歌名 歌手 ， 以保证搜索正确</h4>
+        <div class="code">
+          #音乐 海阔天空 beyond
+        </div>
+
+        <h4>&nbsp;这样就可以实时加入一个对应的虾米音乐盒给对方收听啦！</h4>
+        <embed width="257" height="33" wmode="transparent" style="margin:5px 0 0 0;" type="application/x-shockwave-flash" src="http://www.xiami.com/widget/0_174652/singlePlayer.swf"> </embed>
+
+        <h2>UC豆瓣电台<a name="douban"></a></h2>
+        <h4>&nbsp;&nbsp;想随机听听音乐？使用输入下面的豆瓣命令试试:)，不过听的歌就不是一样的啦，很多功能你都可以通过给自己发信息尝试。</h4>
+        <div class="code">
+          #douban
+        </div>
+        <h2>有道中英互译<a name="youdao"></a></h2>
+        <h4>&nbsp;&nbsp;聊天对象是老外,自己不太懂英文？通过#youdao, #cn, #en, #翻译， 加空白（tab，空格，回车等）后输入您的内容，把有道翻译请出来帮你翻译！</h4>
+        <div class="code">
+          #翻译<br/>
+          你好啊，我很喜欢你的创意。<br/> 
+        </div>
+        <em>有道API支持中英互译，即当你启用这些命令后，有道会检测你输入的类型，例如输入英文，会帮你翻译成中文，输入中文，会帮你翻译成英文。跟老外聊天一样是去查字典，不如直接使用吧^_^</em>
+
+        <h2>不熟悉怎么办？</h2>
+        <h4>&nbsp;&nbsp;您可以通过给自己发消息，试验这些功能，当你熟悉后就像使用VIM，打字的时候可以不用动鼠标加入这么多好玩的，点击右边的微型窗口打开聊天工具，尝试一下吧，祝你愉快！</h4>
+
+        <h2>使用IE6?</h2>
+        <h4>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;我明白如果作为一个推广项目，国内不支持IE6，后果非常惨烈，但是作为开发者，我们都有推动互联网前进的责任和使命，当你支持IE6，意味着IE6的用户们可以高枕无忧的使用你的应用，他们不会去想着升级浏览器，而开发者将会每次都要对付这个落后的浏览器，这种恶性循环都是由于目光短浅且唯利是图的国内商家们造成的，根本没有将推动互联网前进作为使命，如果国内巨头都有乔布斯推动互联网前进的霸气(敢于最先废除软驱、光驱、Flash、现在苹果的Mac Pro又废除以太网接口了)，国内互联网也不至于这么落后，特别是网银，资深互联网用户不放弃IE大都因为网银只支持IE系列，如今互联网已经走进千家万户，当IE6用户每次打开一个网页都出现错乱和提示升级浏览器，由于他已经有了上网的需求，他将不得不升级浏览器。写IE6 的CSS Hack并不难，由于此项目为个人实验项目，为了互联网更好的发展，以及帮助前端开发者们摆脱困境，我决定加入反IE6的队伍中，IE6用户请升级您的浏览器，您将会获得更好的体验，该WebIM在HTML5浏览器会自动选用WebSocket新一代的高性能通讯方式。一个人的力量是渺小的，当开发者们联合抵制IE6，IE6用户总有升级浏览器的一天。就像腾讯发展到今天已经不会再支持旧的QQ，强制用户升级到新的QQ，为广大QQ用户提供统一体验，大家有目共睹。</h4>
+        <em>浏览器支持：IE7+ , Chrome8.0+ , FireFox 4.0+, 部分特效仅在CSS3支持的浏览器实现</em>
+
+
+      </div>
+      <script type="text/javascript">
+        if(window.navigator.userAgent.match(/msie 6.0/i)){
+          alert('请升级您的浏览器。');  
+        }
+</script>
+
+<div id="footer">
+  <a href="https://github.com/LoginQin">GitHub</a> &nbsp;|&nbsp; 
+  <a href="http://weibo.com/chinesetiger">ChineseTiger  </a> | &nbsp;2012
+  <h3>
+    This is a test paper.
+  </h3>
+</div>
+
+    </div> 
+    <div style="display:block; height:200px;"></div>
     <div id="WebIM">
       <!-- 聊天窗口 -->
       <div id="IM_MiniBox" title="Chatting With Online People"><div id="IM_NoticeIMG" class="IM_IMG-offline">;-(</div><b>聊天</b><span>Connecting</span></div>
       <div id="IM_SysMsgBar" ><span>System Message</span></div> 
       <div id="IM_ChatBox">
-      
+
         <div class="IM_ChatList" onselectstart="return false">
           <h3>Chat</h3>
-            <dl class="IM_Chatting-List"> </dl>
+          <dl class="IM_Chatting-List"> </dl>
         </div>
         <div class="IM_UserWindow">
-        <div class="IM_PersonWin" sid="{#sid}">
+          <div class="IM_PersonWin" sid="{#sid}">
             <div class="IM_MsgWinHeader" onselectstart="return false">
-                <div class="IM_ChattingTitle">
-                    <span title="User State" class="IM_TargetState {#groupstate}">{#name}</span>
+              <div class="IM_ChattingTitle">
+                <span title="User State" class="IM_TargetState {#groupstate}">{#name}</span>
 
-            </div>
-            	
-                <div class="IM_UserWinclose" onselectstart="return false"  closeid="{#sid}" title="关闭">×</div>
-                <div class="IM_MinSizeWin" title="最小化">_<!--[if IE 7]><span class="IM_IE7hack">_</span><![endif]--></div>
+              </div>
+
+              <div class="IM_UserWinclose" onselectstart="return false"  closeid="{#sid}" title="关闭">×</div>
+              <div class="IM_MinSizeWin" title="最小化">_<!--[if IE 7]><span class="IM_IE7hack">_</span><![endif]--></div>
             </div>
 
             <div class="IM_MsgWindow" winid="{#sid}">
-               <!-- 消息体 -->
+              <!-- 消息体 -->
             </div>
 
-    </div> <!-- per win end! -->
-        <div class="IM_WinBottom"></div>
-    <ul class="IM_TB-fontList"><span>Font Size</span>
+          </div> <!-- per win end! -->
+          <div class="IM_WinBottom"></div>
+          <ul class="IM_TB-fontList"><span>Font Size</span>
             <li value="12">12px</li><li value="13">13px</li><li value="14">14px</li><li value="15">15px</li>
             <li value="16">16px</li><li value="17">17px</li>
-    </ul>
-    <div class="IM_ToolBar"><a class="IM_TB-fontOption" href="javascript:void(0)">A</a>
-    	    <div class="IM_SendTypeOption">
-            <h3>SEND TYPE:</h3>
-            <span class="IM_unactive" value="Enter">Enter</span>
-            <span class="IM_active" value="Ctrl_Enter">Ctrl+Enter</span>
-    </div>
-    </div>
-    <div class="IM_UserInputBox">
+          </ul>
+          <div class="IM_ToolBar"><a class="IM_TB-fontOption" href="javascript:void(0)">A</a>
+            <div class="IM_SendTypeOption">
+              <h3>SEND TYPE:</h3>
+              <span class="IM_unactive" value="Enter">Enter</span>
+              <span class="IM_active" value="Ctrl_Enter">Ctrl+Enter</span>
+            </div>
+          </div>
+          <div class="IM_UserInputBox">
             <textarea class="IM_UserTextarea"  name="_UserText"></textarea>
 
-    </div>
+          </div>
 
-    <a class="IM_btn_Send" title="Send Message" href="javascript:void(0)">Send</a>
+          <a class="IM_btn_Send" title="Send Message" href="javascript:void(0)">Send</a>
         </div>
 
-</div>
+      </div>
       <!--Group聊天窗口end-->
-<!--Group Chatting Box-->
+      <!--Group Chatting Box-->
 
 
-<!-- 主窗口 -->
-<div id="IM_MainPanel">
-<div id="IM_TargetInfo"></div>
-<div id="IM_DialoBox"><div class="IM_DialoClose">×</div><div class="IM_DialoHead"><h2>Master</h2><h4>Login</h4></div><p>
-<label>用户名<br /><input id="IM_SignInName"  class="IM_DialoInput" size="20px" type="text" /></label><label>密码<br/><input id="IM_SignInPw" class="IM_DialoInput" size="20px" type="password"/></label></p><a id="IM_btn_SignIn" type="button" >登 陆</a></div>
-<div id="IM_AboutBox" onselectstart="return false" ><div class="IM_AboutHead"><h2>About</h2><h4>Author</h4></div><div class="IM_DialoContent">
-<img src="http://www.gravatar.com/avatar/b69725e32e5d2d134d8aca7b8f63244e?s=100"  width="100" height="100"/>
-<dl><dd><span>作 者:</span> 覃 炜</dd><dd><span>E-Mail:</span> qinwei081@gmail.com</dd><dd><span>微 博:</span><a href="http://weibo.com/chinesetiger" target="_blank">Chinese Tiger</a></dd>
-<dd><span>GitHub:</span><a href="https://github.com/LoginQin" target="_blank">LoginQin</a></dd></dl>
-</div><div class="IM_DialoFooter">Chinese Tiger</div></div>
-<div id="IM_MainBox">
-        <div class="IM_MinBar" title="最小化"><em>Min</em></div>
-        <div class="IM_head">
-                <span id="IM_nickname">Your Name</span>
-                <span id="IM_status" class="IM_online">Online</span>
+      <!-- 主窗口 -->
+      <div id="IM_MainPanel">
+        <div id="IM_TargetInfo"></div>
+        <div id="IM_DialoBox"><div class="IM_DialoClose">×</div><div class="IM_DialoHead"><h2>Master</h2><h4>Login</h4></div><p>
+          <label>用户名<br /><input id="IM_SignInName"  class="IM_DialoInput" size="20px" type="text" /></label><label>密码<br/><input id="IM_SignInPw" class="IM_DialoInput" size="20px" type="password"/></label></p><a id="IM_btn_SignIn" type="button" >登 陆</a></div>
+        <div id="IM_AboutBox" onselectstart="return false" ><div class="IM_AboutHead"><h2>About</h2><h4>Author</h4></div><div class="IM_DialoContent">
+            <img src="http://www.gravatar.com/avatar/b69725e32e5d2d134d8aca7b8f63244e?s=100"  width="100" height="100"/>
+            <dl><dd><span>作 者:</span> 覃 炜</dd><dd><span>E-Mail:</span> qinwei081@gmail.com</dd><dd><span>微 博:</span><a href="http://weibo.com/chinesetiger" target="_blank">Chinese Tiger</a></dd>
+              <dd><span>GitHub:</span><a href="https://github.com/LoginQin" target="_blank">LoginQin</a></dd></dl>
+        </div><div class="IM_DialoFooter">Chinese Tiger</div></div>
+        <div id="IM_MainBox">
+          <div class="IM_MinBar" title="最小化"><em>Min</em></div>
+          <div class="IM_head">
+            <span id="IM_nickname">Your Name</span>
+            <span id="IM_status" class="IM_online">Online</span>
+          </div>
+
+          <!-- 个人内容 -->
+          <div class="IM_content">
+
+            <div id="IM_Master">
+              <h3 class="IM_category">Master</h3><a href="javascript:void(0)" class="IM_MasterSignIN">登 录</a><a href="javascript:void(0)" class="IM_MasterSignOut">退 出</a>
+              <ul>        
+                <li class="IM_listitem IM_MasterOffline" sid="master:12345"><span>中国老虎</span></li>
+                <li class="IM_listitem IM_MasterOnline" sid="master:123456"><span>HKLLO</span></li>
+              </ul>
+            </div>
+            <div id="IM_WithU"><!--在线列表 h3.IM_category ul li.IM_listitem IMnear IM_backlist-->
+              <h3 class="IM_category">9000-WithU</h3>
+              <ul>
+              </ul>
+            </div>
+          </div>
+
+          <div class="IM_footer">
+            <div id="IM_group" ><span></span>GROUP</div>
+            <div class="IM_setting"><span></span>SETTING</div>
+          </div>
         </div>
+        <!-- 组别页面 -->
+        <div id="IM_GroupBox">
+          <div class="IM_MinBar" title="Minimize The Window"><em>Min</em></div>
+          <div class="IM_head">
+            <span>Group</span>
+          </div>
 
-        <!-- 个人内容 -->
-        <div class="IM_content">
+          <div class="IM_content">
+            <div id="IM_group_default">
+              <h3 class="IM_category">Default</h3>
+              <ul>
+                <li class="IM_listitem" sid="group:default"><span>NoChat</span></li>
+              </ul>
+            </div> 
+          </div>
 
-                <div id="IM_Master">
-                        <h3 class="IM_category">Master</h3><a href="javascript:void(0)" class="IM_MasterSignIN">登 录</a><a href="javascript:void(0)" class="IM_MasterSignOut">退 出</a>
-                        <ul>        
-                                <li class="IM_listitem IM_MasterOffline" sid="master:12345"><span>中国老虎</span></li>
-                                <li class="IM_listitem IM_MasterOnline" sid="master:123456"><span>HKLLO</span></li>
-                        </ul>
-                </div>
-                <div id="IM_WithU"><!--在线列表 h3.IM_category ul li.IM_listitem IMnear IM_backlist-->
-                        <h3 class="IM_category">9000-WithU</h3>
-                        <ul>
-                        </ul>
-                </div>
+          <div class="IM_footer">
+            <div class="IM_home" ><span></span>HOME</div>
+            <div class="IM_setting"><span></span>SETTING</div>
+          </div>
         </div>
+        <!-- 组别页面 end! -->
 
-        <div class="IM_footer">
-                <div id="IM_group" ><span></span>GROUP</div>
-                <div class="IM_setting"><span></span>SETTING</div>
-        </div>
-</div>
-<!-- 组别页面 -->
-<div id="IM_GroupBox">
-		<div class="IM_MinBar" title="Minimize The Window"><em>Min</em></div>
-        <div class="IM_head">
-                <span>Group</span>
-        </div>
+        <!-- 设置页面 -->
+        <div id="IM_SettingBox">
+          <div class="IM_MinBar" title="Minimize The Window"><em>Min</em></div>
+          <div class="IM_head IM_setting_head">
+            <span>SETTING</span>
+          </div>
+          <div class="IM_content_setting">
+            <ul>
+              <li class="IM_setitem"><span>Name</span>
+              <input id="IM_setname" class="IM_set" type="text" />
+              </li>
+              <li class="IM_setitem">
+              <span>Gender</span>
+              <div id="IM_OP_Gender" class="IM_set_option" >
+                <span class="IM_active">Mr</span>
+                <span class="IM_unactive">Miss</span>
+              </div>
+              </li>
+              <li class="IM_setitem"><span>City</span>
+              <input id="IM_setcity" class="IM_set" type="text" />
+              </li>
+              <li  class="IM_setitem">
+              <span>Sound</span>
+              <div id="IM_OP_Sound" class="IM_set_option" >
+                <span class="IM_active">ON</span>
+                <span class="IM_unactive">OFF</span>
+              </div>
 
-        <div class="IM_content">
-                <div id="IM_group_default">
-                        <h3 class="IM_category">Default</h3>
-                        <ul>
-                                <li class="IM_listitem" sid="group:default"><span>NoChat</span></li>
-                        </ul>
-                      </div> 
+              </li>
+              <li class="IM_setitem">
+              <span>Animations</span>
+              <div id="IM_OP_Animation" class="IM_set_option" >
+                <span class="IM_active">ON</span>
+                <span class="IM_unactive">OFF</span>
+              </div>
+              </li>             
+              <li class="IM_setitem"><span id="IM_Tutorial">Tutorial</span></li>             
+              <li class="IM_setitem"><span id="IM_About">About</span></li> 
+            </ul>            
+          </div>
+          <div class="IM_footer">
+            <div class="IM_btn_save"><span></span>&nbsp;</div>
+            <div class="IM_btn_back" ><span></span>&nbsp;</div>
+          </div>
         </div>
+        <!-- 设置页面 end！-->
 
-        <div class="IM_footer">
-                <div class="IM_home" ><span></span>HOME</div>
-                <div class="IM_setting"><span></span>SETTING</div>
-        </div>
-</div>
-<!-- 组别页面 end! -->
-
-<!-- 设置页面 -->
-<div id="IM_SettingBox">
- 		<div class="IM_MinBar" title="Minimize The Window"><em>Min</em></div>
-        <div class="IM_head IM_setting_head">
-                <span>SETTING</span>
-        </div>
-        <div class="IM_content_setting">
-                <ul>
-                        <li class="IM_setitem"><span>Name</span>
-                        <input id="IM_setname" class="IM_set" type="text" />
-                        </li>
-                        <li class="IM_setitem">
-                        <span>Gender</span>
-                        <div id="IM_OP_Gender" class="IM_set_option" >
-                                <span class="IM_active">Mr</span>
-                                <span class="IM_unactive">Miss</span>
-                        </div>
-                        </li>
-                        <li class="IM_setitem"><span>City</span>
-                         <input id="IM_setcity" class="IM_set" type="text" />
-                        </li>
-                        <li  class="IM_setitem">
-                        <span>Sound</span>
-                        <div id="IM_OP_Sound" class="IM_set_option" >
-                                <span class="IM_active">ON</span>
-                                <span class="IM_unactive">OFF</span>
-                        </div>
-
-                        </li>
-                        <li class="IM_setitem">
-                        <span>Animations</span>
-                        <div id="IM_OP_Animation" class="IM_set_option" >
-                                <span class="IM_active">ON</span>
-                                <span class="IM_unactive">OFF</span>
-                        </div>
-                        </li>             
-                        <li class="IM_setitem"><span id="IM_Tutorial">Tutorial</span></li>             
-                        <li class="IM_setitem"><span id="IM_About">About</span></li> 
-                </ul>            
-        </div>
-        <div class="IM_footer">
-                <div class="IM_btn_save"><span></span>&nbsp;</div>
-                <div class="IM_btn_back" ><span></span>&nbsp;</div>
-        </div>
-</div>
-<!-- 设置页面 end！-->
-
-</div><!--MainPanel-->
+      </div><!--MainPanel-->
 
     </div>
   </body>
