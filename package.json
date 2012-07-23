@@ -1,6 +1,6 @@
 {
   "name": "chatex",
-  "version": "0.0.3-4",
+  "version": "0.0.3-7",
   "private": true,
   "dependencies": {
     "express": "2.5.8",

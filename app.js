@@ -35,6 +35,9 @@ var io = sio.listen(app);
 
 // Routes
 app.get('/', routes.index);
+app.get('/chat/', function(req, res){
+ res.redirect('/chat');
+});
 app.get('/chat', function(req, res){
   //res.render('chat', {title: 'Chat-Room', layout: 'mylayout'});
   var realpath = __dirname + '/views/' + url.parse('no2chat.html').pathname;
@@ -43,18 +46,6 @@ app.get('/chat', function(req, res){
 });
 app.get('/remote-chat', routes.chat);
 
-function html_encode(str){   
-  var s = "";   
-  if (str.length == 0){ return "";}   
-  s = str.replace(/&/g, "&amp;");   
-  s = s.replace(/</g, "&lt;");   
-  s = s.replace(/>/g, "&gt;");   
-  s = s.replace(/ /g, "&nbsp;");   
-  s = s.replace(/\'/g, "&#39;");   
-  s = s.replace(/\"/g, "&quot;");   
-    s = s.replace(/\n/g, "<br>");
-  return s;   
-} 
 var util = require('util');
 /*
 var mem = process.memoryUsage();
@@ -64,7 +55,7 @@ setInterval(function(){
   console.log("RSS:" + (mem.rss/(1024*1024)));
 }, 60000);
 */
-var socket_listener = require('./socketio/listen').listener;
+var socket_listener = require('./socketio/listen_nodejitsu').listener;
 socket_listener(io);//用注入方式把io注给外部处理,达到分离
-app.listen(3000);
+app.listen(80);
 //console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
