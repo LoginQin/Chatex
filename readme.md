@@ -1,8 +1,8 @@
-## 关于NoChat
-   NoChat是研究高性能Web实时应用架构而实现的高性能，可扩展的WebIM系统。采用Nodejs + Socket.IO + Redis 实现。
+## 关于Chatex
+   Chatex是研究高性能Web实时应用架构而实现的高性能，可扩展的WebIM系统。采用Nodejs + Socket.IO + Redis 实现。
 
 ### 小历史
-   2012年开始时名字还没想好 : )，当时就叫NoChat(Node Chat 或者 Not Only Chat), 作为毕设(当初Photoshop不也是毕设?), 目前申请了个域名和空间[Chatex.im](http://chatex.im)来捣鼓.
+   2012年开始时名字还没想好 : )，当时就叫NoChat(Node Chat 或者 Not Only Chat), 作为毕设(当初Photoshop不也是毕设?), 目前申请了个域名和空间[Chatex.im](http://chatex.im)来捣鼓(目前已经不维护这个域名了, 卖掉了)
 
    当时github这个版本测试运行在Nodejs的PaaS上(Nodejitsu)，[http://chatex.jit.su/chat](http://chatex.jit.su/chat), 后来该网站收费后把我运行的项目停了,这个地址已经无法运行,我也无心再跟"免费"商折腾了.
   
